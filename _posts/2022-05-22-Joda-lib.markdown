@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "How Joda Date library helped with every Date utilities, when we still had to support < Java 8"
-tags: Android targetSdk Date Joda
+tags: Android Java8 Date Joda
 ---
 
 Why Joda?
