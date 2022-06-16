@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4001/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4001/" rel="alternate" type="text/html" /><updated>2022-06-17T01:57:43+05:30</updated><id>http://localhost:4001/feed.xml</id><title type="html">Varsha Kulkarni</title><subtitle>Errs Unravelled</subtitle><entry><title type="html">How Joda Date library helped with every Date utilities, when we still had to support &amp;lt; Java 8</title><link href="http://localhost:4001/2022/05/22/Joda-lib.html" rel="alternate" type="text/html" title="How Joda Date library helped with every Date utilities, when we still had to support &amp;lt; Java 8" /><published>2022-05-22T00:00:00+05:30</published><updated>2022-05-22T00:00:00+05:30</updated><id>http://localhost:4001/2022/05/22/Joda-lib</id><content type="html" xml:base="http://localhost:4001/2022/05/22/Joda-lib.html">&lt;p&gt;Why Joda?&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4001/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4001/" rel="alternate" type="text/html" /><updated>2022-06-17T02:03:06+05:30</updated><id>http://localhost:4001/feed.xml</id><title type="html">Varsha Kulkarni</title><subtitle>Errs Unravelled</subtitle><entry><title type="html">How Joda Date library helped with every Date utilities, when we still had to support &amp;lt; Java 8</title><link href="http://localhost:4001/2022/05/22/Joda-lib.html" rel="alternate" type="text/html" title="How Joda Date library helped with every Date utilities, when we still had to support &amp;lt; Java 8" /><published>2022-05-22T00:00:00+05:30</published><updated>2022-05-22T00:00:00+05:30</updated><id>http://localhost:4001/2022/05/22/Joda-lib</id><content type="html" xml:base="http://localhost:4001/2022/05/22/Joda-lib.html">&lt;p&gt;Why Joda?&lt;/p&gt;
 &lt;blockquote&gt;
-  &lt;p&gt;Joda-Time provides a quality replacement for the Java date and time classes.
+  &lt;p&gt;&lt;a href=&quot;https://www.joda.org/joda-time/&quot;&gt;Joda-Time&lt;/a&gt; provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.&lt;/p&gt;
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
+Joda solves the problem of providing one set of APIs which can be used across all OS versions.&lt;/p&gt;
 
 &lt;p&gt;Add the dependency&lt;/p&gt;
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;implementation 'net.danlew:android.joda:2.10.14'
