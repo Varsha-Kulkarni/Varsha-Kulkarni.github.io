@@ -1,0 +1,44 @@
+<p>Why Joda?</p>
+<blockquote>
+  <p>Joda-Time provides a quality replacement for the Java date and time classes.
+The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
+Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
+Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+</blockquote>
+
+<p>Add the dependency</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
+</code></pre></div></div>
+
+<p>Get date in the time zone</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+</code></pre></div></div>
+
+<p>From Unix to human readable date at given timezone.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+return DateTime(receivedTime * 1000L, zone)
+</code></pre></div></div>
+
+<p>Manipulate current time to trigger an alarm</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
+</code></pre></div></div>
+
+<p>If device is in different time zone, convert to device time zone</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
+</code></pre></div></div>
+
+<p>Convert the device time to Calender object to pass it to AlarmManager</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = deviceTime.toGregorianCalendar()
+</code></pre></div></div>
+
+<p>Use this time to pass it to Alarm methods</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(
+AlarmManager.AlarmClockInfo(time, pendingIntent),
+pendingIntent)
+</code></pre></div></div>
+
+<p>For Unit testing:
+testCompile ‘joda-time:joda-time:2.10.14’</p>
+
