@@ -14,7 +14,7 @@ var store = [{
         "tags": ["Android","Java8","Date","Joda"],
         "url": "http://localhost:4001/2022/05/22/Joda-lib.html"
       },{
-        "title": "How Joda Date library helped with every Date utilities, when we still had to support < Java 8",
+        "title": "Then Joda, Now to Java 8 APIs",
         "excerpt":"Why Joda? Joda-Time provides a quality replacement for the Java date and time classes.The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.From Java SE...","categories": [],
         "tags": ["Android","targetSdk","Date","Joda-time","Java8","java.time","sugar","desugar"],
         "url": "http://localhost:4001/2022/05/22/Joda-Lib.html"

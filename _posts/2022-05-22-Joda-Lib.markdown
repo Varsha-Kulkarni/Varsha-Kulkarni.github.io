@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "How Joda Date library helped with every Date utilities, when we still had to support < Java 8"
+title:  "Then Joda, Now to Java 8 APIs"
 tags: Android targetSdk Date Joda-time Java8 java.time sugar desugar 
 ---
 
@@ -101,7 +101,7 @@ dependencies {
 
 Now you can continue using all the Java 8 Time APIs!
 
-Here is the effort that took for migrating all Joda calls to equivalent Java 8 calls:
+After all the research, here is the effort that took for migrating all Joda calls to equivalent Java 8 APIs:
 
 Get date in the time zone
 
