@@ -1,1 +1,487 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
 
+  
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Post Archive | Varsha Kulkarni</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Post Archive" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Errs Unravelled" />
+<meta property="og:description" content="Errs Unravelled" />
+<link rel="canonical" href="http://localhost:4001/posts/" />
+<meta property="og:url" content="http://localhost:4001/posts/" />
+<meta property="og:site_name" content="Varsha Kulkarni" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Post Archive" />
+<meta name="twitter:site" content="@varshamkulkarni" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Errs Unravelled","headline":"Post Archive","url":"http://localhost:4001/posts/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Varsha Kulkarni" href="/feed.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--posts  post-archive">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/">Home</a></li><li><a href="/posts/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">Varsha Kulkarni</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">Errs Unravelled</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <main id="main" class="main-content" aria-label="Content">
+  <article>
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title">Post Archive</h1>
+        
+      </header>
+      <div class="page-content">
+        
+
+
+<ul class="taxonomy-index">
+  
+  
+    <li>
+      <a href="#2022">
+        <strong>2022</strong> <span class="taxonomy-count">4</span>
+      </a>
+    </li>
+  
+</ul>
+
+
+
+  <section id="2022" class="taxonomy-section">
+    <h2 class="taxonomy-title">2022</h2>
+    <div class="entries-list">
+      
+        
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <h3 class="entry-title p-name">
+      
+        <a href="/2022/05/22/Joda-Lib.html" rel="bookmark">How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8
+</a>
+      
+    </h3>
+    
+  </header>
+  
+    <div class="entry-excerpt p-summary">
+      
+        <h1 id="why-joda">Why Joda?</h1>
+<blockquote>
+  <p>Joda-Time provides a quality replacement for the Java date and time classes.
+The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
+Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
+Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+</blockquote>
+
+<p>Add the dependency</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
+</code></pre></div></div>
+
+<p>Get date in the time zone</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+val time = DateTime(zone)
+</code></pre></div></div>
+
+<p>From Unix to human readable date at given timezone.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+return DateTime(receivedTime * 1000L, zone)
+</code></pre></div></div>
+
+<p>Manipulate current time to trigger an alarm</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
+</code></pre></div></div>
+
+<p>If device is in different time zone, convert to device time zone</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
+</code></pre></div></div>
+
+<p>Convert the device time to Calender object to pass it to AlarmManager</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = deviceTime.toGregorianCalendar()
+</code></pre></div></div>
+
+<p>Use this time to pass it to Alarm methods</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)
+</code></pre></div></div>
+
+<p>For Unit testing:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>testImplementation 'joda-time:joda-time:2.10.14'
+</code></pre></div></div>
+
+<h1 id="update"><strong>Update</strong></h1>
+
+<p>Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with <code class="language-plaintext highlighter-rouge">NoClassDefFoundError</code>). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available.</p>
+
+<h1 id="desugaring">Desugaring</h1>
+
+<p>What’s sugaring in programming world? Why we need desugaring and how it helps with above problem?</p>
+
+<p>From one of the SO posts:</p>
+<blockquote>
+  <p>Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program).
+Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome.</p>
+</blockquote>
+
+<blockquote>
+  <p>“Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions.</p>
+</blockquote>
+
+<p>So what we are doing here?</p>
+<blockquote>
+  <p>When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them.  The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code.
+So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android.</p>
+</blockquote>
+
+<p>To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>android {
+    defaultConfig {
+        // Required when setting minSdkVersion to 20 or lower
+        multiDexEnabled = true
+    }
+
+    compileOptions {
+        // Flag to enable support for the new language APIs
+
+        // For AGP 4.1+
+        isCoreLibraryDesugaringEnabled = true
+        // For AGP 4.0
+        // coreLibraryDesugaringEnabled = true
+
+        // Sets Java compatibility to Java 8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+}
+</code></pre></div></div>
+
+<p>Now you can continue using all the Java 8 Time APIs!</p>
+
+<p>Here is the effort that took for migrating all Joda calls to equivalent Java 8 calls:</p>
+
+<p>Get date in the time zone</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+val time = DateTime(zone)
+</code></pre></div></div>
+
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zoneId = ZoneId.of(timezoneId)
+val time = ZonedDateTime.now(zoneId)
+</code></pre></div></div>
+
+<p>From Unix to human readable date at given timezone.</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+return DateTime(receivedTime * 1000L, zone)
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: ZoneId = ZoneId.of(timezoneId)
+val instant = Instant.ofEpochMilli(receivedTime * 1000L)
+return ZonedDateTime.ofInstant(instant, zone)
+</code></pre></div></div>
+
+<p>Manipulate current time to trigger an alarm</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime =
+            date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0)
+                .withNano(0)
+</code></pre></div></div>
+
+<p>If device is in different time zone, convert to device time zone</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault())
+</code></pre></div></div>
+
+<p>Convert the device time to Calender object to pass it to AlarmManager</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = deviceTime.toGregorianCalendar()
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = GregorianCalendar.from(deviceTime)
+</code></pre></div></div>
+<p>Use this time to pass it to Alarm methods</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)
+</code></pre></div></div>
+
+
+      
+    </div>
+  
+  
+    <footer class="entry-meta">
+      
+
+<span class="read-time">3 min read</span>
+
+      <time class="entry-date dt-published" datetime="2022-05-22T00:00:00+05:30">22 May 2022
+  </time>
+    </footer>
+  
+</article>
+
+      
+        
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <h3 class="entry-title p-name">
+      
+        <a href="/2022/05/22/Joda-lib.html" rel="bookmark">How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8
+</a>
+      
+    </h3>
+    
+  </header>
+  
+    <div class="entry-excerpt p-summary">
+      
+        <p>Why Joda?</p>
+<blockquote>
+  <p><a href="https://www.joda.org/joda-time/">Joda-Time</a> provides a quality replacement for the Java date and time classes.
+The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
+</blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
+Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+
+<p>Add the dependency</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
+</code></pre></div></div>
+
+<p>Get date in the time zone</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+</code></pre></div></div>
+
+<p>From Unix to human readable date at given timezone.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+return DateTime(receivedTime * 1000L, zone)
+</code></pre></div></div>
+
+<p>Manipulate current time to trigger an alarm</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
+</code></pre></div></div>
+
+<p>If device is in different time zone, convert to device time zone</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
+</code></pre></div></div>
+
+<p>Convert the device time to Calender object to pass it to AlarmManager</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = deviceTime.toGregorianCalendar()
+</code></pre></div></div>
+
+<p>Use this time to pass it to Alarm methods</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(
+AlarmManager.AlarmClockInfo(time, pendingIntent),
+pendingIntent)
+</code></pre></div></div>
+
+<p>For Unit testing:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>testCompile 'joda-time:joda-time:2.10.14'
+</code></pre></div></div>
+
+
+      
+    </div>
+  
+  
+    <footer class="entry-meta">
+      
+
+<span class="read-time">~1 min read</span>
+
+      <time class="entry-date dt-published" datetime="2022-05-22T00:00:00+05:30">22 May 2022
+  </time>
+    </footer>
+  
+</article>
+
+      
+        
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <h3 class="entry-title p-name">
+      
+        <a href="/2022/05/04/bluetooth_permissions_on_android_12.html" rel="bookmark">Bluetooth Permissions on Android 12
+</a>
+      
+    </h3>
+    
+  </header>
+  
+    <div class="entry-excerpt p-summary">
+      
+        <p>Beginning with Android 12, new run-time permissions are added for accessing nearby Bluetooth devices. Without this permission any APIs related to Bluetooth devices access will result into Fatal Exception:</p>
+
+
+      
+    </div>
+  
+  
+    <footer class="entry-meta">
+      
+
+<span class="read-time">1 min read</span>
+
+      <time class="entry-date dt-published" datetime="2022-05-04T00:00:00+05:30">4 May 2022
+  </time>
+    </footer>
+  
+</article>
+
+      
+        
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <h3 class="entry-title p-name">
+      
+        <a href="/welcome/2022/05/03/welcome.html" rel="bookmark">Welcome!
+</a>
+      
+    </h3>
+    
+  </header>
+  
+    <div class="entry-excerpt p-summary">
+      
+        <p>You will find here some debugging, some tips and tricks from my experience.</p>
+
+      
+    </div>
+  
+  
+    <footer class="entry-meta">
+      
+
+<span class="read-time">~1 min read</span>
+
+      <time class="entry-date dt-published" datetime="2022-05-03T23:35:34+05:30">3 May 2022
+  </time>
+    </footer>
+  
+</article>
+
+      
+    </div>
+    <a href="#page-title" class="back-to-top">Back to Top &uarr;</a>
+  </section>
+
+
+
+        
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/varshamkulkarni"><i class="fab fa-twitter fa-2x" title="Twitter"></i></a><a class="social-icon" href="https://github.com/Varsha-Kulkarni"><i class="fab fa-github fa-2x" title="GitHub"></i></a><a class="social-icon" href="https://www.linkedin.com/in/varshakulkarni131184"><i class="fab fa-linkedin fa-2x" title="LinkedIn"></i></a><a class="social-icon" href="https://stackoverflow.com/users/1169441"><i class="fab fa-stack-overflow fa-2x" title="Stackoverflow"></i></a><a class="social-icon" href="/feed.xml"><i class="fas fa-rss fa-2x" title="Feed"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2022 Varsha Kulkarni. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+  </body>
+
+</html>

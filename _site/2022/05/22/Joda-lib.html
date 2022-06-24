@@ -1,12 +1,140 @@
-<p>Why Joda?</p>
-<blockquote>
-  <p><a href="https://www.joda.org/joda-time/">Joda-Time</a> provides a quality replacement for the Java date and time classes.
-The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
-</blockquote>
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
 
-<p>Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
+  
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8 | Varsha Kulkarni</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Why Joda? Joda-Time provides a quality replacement for the Java date and time classes. The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310). Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs. Joda solves the problem of providing one set of APIs which can be used across all OS versions. Add the dependency implementation &#39;net.danlew:android.joda:2.10.14&#39; Get date in the time zone val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) From Unix to human readable date at given timezone. val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Manipulate current time to trigger an alarm var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) If device is in different time zone, convert to device time zone var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Convert the device time to Calender object to pass it to AlarmManager val time = deviceTime.toGregorianCalendar() Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent) For Unit testing: testImplementation &#39;joda-time:joda-time:2.10.14&#39; Update Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with NoClassDefFoundError). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available. Desugaring What’s sugaring in programming world? Why we need desugaring and how it helps with above problem? From one of the SO posts: Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program). Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome. “Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions. So what we are doing here? When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them. The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code. So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android. To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file: android { defaultConfig { // Required when setting minSdkVersion to 20 or lower multiDexEnabled = true } compileOptions { // Flag to enable support for the new language APIs // For AGP 4.1+ isCoreLibraryDesugaringEnabled = true // For AGP 4.0 // coreLibraryDesugaringEnabled = true // Sets Java compatibility to Java 8 sourceCompatibility = JavaVersion.VERSION_1_8 targetCompatibility = JavaVersion.VERSION_1_8 } } dependencies { coreLibraryDesugaring(&quot;com.android.tools:desugar_jdk_libs:1.1.5&quot;) } Now you can continue using all the Java 8 Time APIs! Here is the effort that took for migrating all Joda calls to equivalent Java 8 calls: Get date in the time zone Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) Java: val zoneId = ZoneId.of(timezoneId) val time = ZonedDateTime.now(zoneId) From Unix to human readable date at given timezone. Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Java: val zone: ZoneId = ZoneId.of(timezoneId) val instant = Instant.ofEpochMilli(receivedTime * 1000L) return ZonedDateTime.ofInstant(instant, zone) Manipulate current time to trigger an alarm Joda: var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) Java: var triggerTime = date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0) .withNano(0) If device is in different time zone, convert to device time zone Joda: var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Java: var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault()) Convert the device time to Calender object to pass it to AlarmManager Joda: val time = deviceTime.toGregorianCalendar() Java: val time = GregorianCalendar.from(deviceTime) Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)" />
+<meta property="og:description" content="Why Joda? Joda-Time provides a quality replacement for the Java date and time classes. The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310). Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs. Joda solves the problem of providing one set of APIs which can be used across all OS versions. Add the dependency implementation &#39;net.danlew:android.joda:2.10.14&#39; Get date in the time zone val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) From Unix to human readable date at given timezone. val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Manipulate current time to trigger an alarm var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) If device is in different time zone, convert to device time zone var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Convert the device time to Calender object to pass it to AlarmManager val time = deviceTime.toGregorianCalendar() Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent) For Unit testing: testImplementation &#39;joda-time:joda-time:2.10.14&#39; Update Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with NoClassDefFoundError). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available. Desugaring What’s sugaring in programming world? Why we need desugaring and how it helps with above problem? From one of the SO posts: Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program). Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome. “Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions. So what we are doing here? When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them. The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code. So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android. To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file: android { defaultConfig { // Required when setting minSdkVersion to 20 or lower multiDexEnabled = true } compileOptions { // Flag to enable support for the new language APIs // For AGP 4.1+ isCoreLibraryDesugaringEnabled = true // For AGP 4.0 // coreLibraryDesugaringEnabled = true // Sets Java compatibility to Java 8 sourceCompatibility = JavaVersion.VERSION_1_8 targetCompatibility = JavaVersion.VERSION_1_8 } } dependencies { coreLibraryDesugaring(&quot;com.android.tools:desugar_jdk_libs:1.1.5&quot;) } Now you can continue using all the Java 8 Time APIs! Here is the effort that took for migrating all Joda calls to equivalent Java 8 calls: Get date in the time zone Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) Java: val zoneId = ZoneId.of(timezoneId) val time = ZonedDateTime.now(zoneId) From Unix to human readable date at given timezone. Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Java: val zone: ZoneId = ZoneId.of(timezoneId) val instant = Instant.ofEpochMilli(receivedTime * 1000L) return ZonedDateTime.ofInstant(instant, zone) Manipulate current time to trigger an alarm Joda: var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) Java: var triggerTime = date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0) .withNano(0) If device is in different time zone, convert to device time zone Joda: var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Java: var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault()) Convert the device time to Calender object to pass it to AlarmManager Joda: val time = deviceTime.toGregorianCalendar() Java: val time = GregorianCalendar.from(deviceTime) Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)" />
+<link rel="canonical" href="http://localhost:4001/2022/05/22/Joda-Lib.html" />
+<meta property="og:url" content="http://localhost:4001/2022/05/22/Joda-Lib.html" />
+<meta property="og:site_name" content="Varsha Kulkarni" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-05-22T00:00:00+05:30" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8" />
+<meta name="twitter:site" content="@varshamkulkarni" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-05-22T00:00:00+05:30","datePublished":"2022-05-22T00:00:00+05:30","description":"Why Joda? Joda-Time provides a quality replacement for the Java date and time classes. The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310). Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs. Joda solves the problem of providing one set of APIs which can be used across all OS versions. Add the dependency implementation &#39;net.danlew:android.joda:2.10.14&#39; Get date in the time zone val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) From Unix to human readable date at given timezone. val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Manipulate current time to trigger an alarm var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) If device is in different time zone, convert to device time zone var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Convert the device time to Calender object to pass it to AlarmManager val time = deviceTime.toGregorianCalendar() Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent) For Unit testing: testImplementation &#39;joda-time:joda-time:2.10.14&#39; Update Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with NoClassDefFoundError). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available. Desugaring What’s sugaring in programming world? Why we need desugaring and how it helps with above problem? From one of the SO posts: Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program). Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome. “Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions. So what we are doing here? When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them. The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code. So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android. To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file: android { defaultConfig { // Required when setting minSdkVersion to 20 or lower multiDexEnabled = true } compileOptions { // Flag to enable support for the new language APIs // For AGP 4.1+ isCoreLibraryDesugaringEnabled = true // For AGP 4.0 // coreLibraryDesugaringEnabled = true // Sets Java compatibility to Java 8 sourceCompatibility = JavaVersion.VERSION_1_8 targetCompatibility = JavaVersion.VERSION_1_8 } } dependencies { coreLibraryDesugaring(&quot;com.android.tools:desugar_jdk_libs:1.1.5&quot;) } Now you can continue using all the Java 8 Time APIs! Here is the effort that took for migrating all Joda calls to equivalent Java 8 calls: Get date in the time zone Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) Java: val zoneId = ZoneId.of(timezoneId) val time = ZonedDateTime.now(zoneId) From Unix to human readable date at given timezone. Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Java: val zone: ZoneId = ZoneId.of(timezoneId) val instant = Instant.ofEpochMilli(receivedTime * 1000L) return ZonedDateTime.ofInstant(instant, zone) Manipulate current time to trigger an alarm Joda: var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) Java: var triggerTime = date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0) .withNano(0) If device is in different time zone, convert to device time zone Joda: var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Java: var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault()) Convert the device time to Calender object to pass it to AlarmManager Joda: val time = deviceTime.toGregorianCalendar() Java: val time = GregorianCalendar.from(deviceTime) Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)","headline":"How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4001/2022/05/22/Joda-Lib.html"},"url":"http://localhost:4001/2022/05/22/Joda-Lib.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Varsha Kulkarni" href="/feed.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  how-joda-date-library-helped-with-every-date-utilities-when-we-still-had-to-support-java-8">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/">Home</a></li><li><a href="/posts/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">Varsha Kulkarni</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">Errs Unravelled</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><div class="author-info">
+
+<span class="read-time">3 min read</span>
+
+    <time class="page-date dt-published" datetime="2022-05-22T00:00:00+05:30"><a class="u-url" href="">22 May 2022</a>
+</time>
+
+  </div>
+</div>
+
+        
+
+        
+  <h3 class="page-taxonomies-title">Tags</h3>
+  <ul class="page-taxonomies"><li class="page-taxonomy">Android</li><li class="page-taxonomy">targetSdk</li><li class="page-taxonomy">Date</li><li class="page-taxonomy">Joda-time</li><li class="page-taxonomy">Java8</li><li class="page-taxonomy">java.time</li><li class="page-taxonomy">sugar</li><li class="page-taxonomy">desugar</li>
+  </ul>
+
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <h1 id="why-joda">Why Joda?</h1>
+<blockquote>
+  <p>Joda-Time provides a quality replacement for the Java date and time classes.
+The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
+Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
 Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+</blockquote>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -14,6 +142,7 @@ Joda solves the problem of providing one set of APIs which can be used across al
 
 <p>Get date in the time zone</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+val time = DateTime(zone)
 </code></pre></div></div>
 
 <p>From Unix to human readable date at given timezone.</p>
@@ -35,12 +164,174 @@ return DateTime(receivedTime * 1000L, zone)
 </code></pre></div></div>
 
 <p>Use this time to pass it to Alarm methods</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(
-AlarmManager.AlarmClockInfo(time, pendingIntent),
-pendingIntent)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)
 </code></pre></div></div>
 
 <p>For Unit testing:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>testCompile 'joda-time:joda-time:2.10.14'
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>testImplementation 'joda-time:joda-time:2.10.14'
 </code></pre></div></div>
 
+<h1 id="update"><strong>Update</strong></h1>
+
+<p>Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with <code class="language-plaintext highlighter-rouge">NoClassDefFoundError</code>). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available.</p>
+
+<h1 id="desugaring">Desugaring</h1>
+
+<p>What’s sugaring in programming world? Why we need desugaring and how it helps with above problem?</p>
+
+<p>From one of the SO posts:</p>
+<blockquote>
+  <p>Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program).
+Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome.</p>
+</blockquote>
+
+<blockquote>
+  <p>“Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions.</p>
+</blockquote>
+
+<p>So what we are doing here?</p>
+<blockquote>
+  <p>When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them.  The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code.
+So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android.</p>
+</blockquote>
+
+<p>To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>android {
+    defaultConfig {
+        // Required when setting minSdkVersion to 20 or lower
+        multiDexEnabled = true
+    }
+
+    compileOptions {
+        // Flag to enable support for the new language APIs
+
+        // For AGP 4.1+
+        isCoreLibraryDesugaringEnabled = true
+        // For AGP 4.0
+        // coreLibraryDesugaringEnabled = true
+
+        // Sets Java compatibility to Java 8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+}
+</code></pre></div></div>
+
+<p>Now you can continue using all the Java 8 Time APIs!</p>
+
+<p>Here is the effort that took for migrating all Joda calls to equivalent Java 8 calls:</p>
+
+<p>Get date in the time zone</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+val time = DateTime(zone)
+</code></pre></div></div>
+
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zoneId = ZoneId.of(timezoneId)
+val time = ZonedDateTime.now(zoneId)
+</code></pre></div></div>
+
+<p>From Unix to human readable date at given timezone.</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
+return DateTime(receivedTime * 1000L, zone)
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val zone: ZoneId = ZoneId.of(timezoneId)
+val instant = Instant.ofEpochMilli(receivedTime * 1000L)
+return ZonedDateTime.ofInstant(instant, zone)
+</code></pre></div></div>
+
+<p>Manipulate current time to trigger an alarm</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var triggerTime =
+            date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0)
+                .withNano(0)
+</code></pre></div></div>
+
+<p>If device is in different time zone, convert to device time zone</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault())
+</code></pre></div></div>
+
+<p>Convert the device time to Calender object to pass it to AlarmManager</p>
+
+<p>Joda:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = deviceTime.toGregorianCalendar()
+</code></pre></div></div>
+<p>Java:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val time = GregorianCalendar.from(deviceTime)
+</code></pre></div></div>
+<p>Use this time to pass it to Alarm methods</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)
+</code></pre></div></div>
+
+
+        </div>
+
+        
+          <div class="page-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4001%2F2022%2F05%2F22%2FJoda-Lib.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--facebook btn--small"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i> <span>Share</span></a>
+  <a href="https://twitter.com/intent/tweet?text=How+Joda+Date+library+helped+with+every+Date+utilities%2C+when+we+still+had+to+support+%3C+Java+8%20http%3A%2F%2Flocalhost%3A4001%2F2022%2F05%2F22%2FJoda-Lib.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4001%2F2022%2F05%2F22%2FJoda-Lib.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=How+Joda+Date+library+helped+with+every+Date+utilities%2C+when+we+still+had+to+support+%3C+Java+8&url=http%3A%2F%2Flocalhost%3A4001%2F2022%2F05%2F22%2FJoda-Lib.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/2022/05/22/Joda-lib.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> How Joda Date library helped with every Date utilities, when we still had to support &lt; Java 8
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/varshamkulkarni"><i class="fab fa-twitter fa-2x" title="Twitter"></i></a><a class="social-icon" href="https://github.com/Varsha-Kulkarni"><i class="fab fa-github fa-2x" title="GitHub"></i></a><a class="social-icon" href="https://www.linkedin.com/in/varshakulkarni131184"><i class="fab fa-linkedin fa-2x" title="LinkedIn"></i></a><a class="social-icon" href="https://stackoverflow.com/users/1169441"><i class="fab fa-stack-overflow fa-2x" title="Stackoverflow"></i></a><a class="social-icon" href="/feed.xml"><i class="fas fa-rss fa-2x" title="Feed"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2022 Varsha Kulkarni. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+  </body>
+
+</html>
