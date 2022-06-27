@@ -115,7 +115,7 @@
       
         <li>
           <a href="#targetsdk">
-            <strong>targetSdk</strong> <span class="taxonomy-count">2</span>
+            <strong>targetSdk</strong> <span class="taxonomy-count">3</span>
           </a>
         </li>
       
@@ -135,9 +135,43 @@
       
         <li>
           <a href="#android">
-            <strong>Android</strong> <span class="taxonomy-count">2</span>
+            <strong>Android</strong> <span class="taxonomy-count">3</span>
           </a>
         </li>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
       
     
       
@@ -293,6 +327,189 @@
   <header class="entry-header">
     <h3 class="entry-title p-name">
       
+        <a href="/2022/06/25/Android12.html" rel="bookmark">Android 12 Support
+</a>
+      
+    </h3>
+    
+  </header>
+  
+    <div class="entry-excerpt p-summary">
+      
+        <p>Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022.</p>
+<blockquote>
+  <p>Starting in August 2022, new apps must target API level 31 (Android 12) or above and adjust for behavioral changes. Wear OS apps must target API level 28 or higher.</p>
+</blockquote>
+
+<blockquote>
+  <p>Starting in November 2022, app updates must target API level 31 or above and adjust for behavioral changes in Android 12.</p>
+</blockquote>
+
+<p>With each release of Android, new features as well as behavior changes are introduced aimed at making it more helpful by improving User Experinence , more secure, and more performant. 
+The app may work exactly as expected out-of-the-box, but there are othercases where app needs to adapt to the platform changes.
+It is recommended to test how the changes may affect the app, work through all the flows and functionality while looking for issues and before testing it is good familiarize with the behavior changesand the changelog.
+How we migrated our app? : Important Updates in Android 12 which may impact the apps</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Update in Android 12</th>
+      <th>Impact Analysis</th>
+      <th>Solution Approach</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified</td>
+      <td>App crashes with exception java.lang.IllegalArgumentException: com.medtronic.mcms.connectandroid: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.</td>
+      <td>Replace PendingIntent.FLAG_UPDATE_CURRENT with PendingIntent.FLAG_IMMUTABLE. add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required Pending intents</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters,  you must explicitly declare the android:exported attribute for these app components.</td>
+      <td>Build fails with exception Manifest merger failed : Apps targeting Android 12 and higher are required to specify an explicit value for android:exported when the corresponding component has an intent filter defined.</td>
+      <td>Add android:exported for all activities, services and broadcast receivers that use intent filters  If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Apps can’t close system dialogs:To improve user control when interacting with apps and the system,  the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12.</td>
+      <td>App crashes with a SecurityException.</td>
+      <td>add condition (Build.VERSION.SDK_INT &lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background.</td>
+      <td>If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException. Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called.</td>
+      <td>Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created. The mutability of each PendingIntent object that app has created must be specified. Use the PendingIntent object created as part of building the notification. Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Bluetooth permissions: Android 12 introduces new permissions that let apps scan for nearby Bluetooth devices without requesting location permissions.</td>
+      <td>App crashes with SecurityException: Need android.permission.BLUETOOTH_SCAN permission when try to do bluetooth scan operation.</td>
+      <td>Declare the following permissions in your app’s manifest file:  If your app looks for Bluetooth devices, such as BLE peripherals, declare the BLUETOOTH_SCAN permission.  If your app communicates with already-paired Bluetooth devices, declare the BLUETOOTH_CONNECT permission.  If your app uses Bluetooth scan results to derive physical location, declare the ACCESS_FINE_LOCATION permission.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification.</td>
+      <td>When app is in the background, Video call activity won’t be started from the broadcast receiver or service</td>
+      <td>Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps.  By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color).</td>
+      <td>The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App)</td>
+      <td>The degraded or unintended experiences can be prevented  by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Bluetooth permissions:</p>
+
+<p>When an app upgrades to target Android 12 or higher, the app must request the new Bluetooth permissions explicitly. 
+Android 12 introduces the following Bluetooth permissions, which replace the BLUETOOTH and BLUETOOTH_ADMIN permissions:</p>
+
+<p>BLUETOOTH_SCAN: Allows apps to discover and pair nearby Bluetooth devices.</p>
+
+<p>BLUETOOTH_ADVERTISE: Allows apps to advertise to nearby Bluetooth devices.</p>
+
+<p>BLUETOOTH_CONNECT: Allows apps to connect to paired Bluetooth devices.</p>
+
+<p>These permissions are part of the new NEARBY_DEVICES runtime permission group. This permission group enables use cases such as connecting to a smartwatch without requiring the LOCATION runtime permission.</p>
+
+<p>These new permissions are app compatible and no changes are required for apps running on Android 11 or lower. For legacy apps targeting Android 11 or lower, the platform automatically translates requests for the legacy Bluetooth permissions into requests for the new permissions.</p>
+
+<p>Approximate location: 
+When using an app that targets Android 12 or higher, users can request that the app have access to only approximate location information. 
+If your app targets Android 12 or higher and requests the ACCESS_FINE_LOCATION runtime permission, you must also request the ACCESS_COARSE_LOCATION permission. 
+You must include both permissions in a single runtime request. 
+When your app requests both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION, the system permissions dialog includes the following new options for the user.</p>
+
+<p>Precise: Provides access to precise location information. 
+Approximate: Provides access only to approximate location information.</p>
+
+<p><a href="">Check this</a> for more details.</p>
+
+<p>2	Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified.
+Usually we declare PendingIntents with flags indicating how a PendingIntent should be retrieved using FLAG_UPDATE_CURRENT or  FLAG_ONE_SHOT, FLAG_NO_CREATE, FLAG_CANCEL_CURRENT
+Now add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required PendingIntents along with the other flags.</p>
+
+<p>If not specified, App crashes with the following exception:
+<code class="language-plaintext highlighter-rouge">java.lang.IllegalArgumentException: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.</code></p>
+
+<p>Java
+Add <code class="language-plaintext highlighter-rouge">PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE</code> 
+Kotlin
+Add <code class="language-plaintext highlighter-rouge">PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE</code></p>
+
+<p>3	Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters, 
+you must explicitly declare the android:exported attribute for these app components.	
+If not added, Build fails with exception</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Manifest merger failed : Apps targeting Android 12 and higher are required
+to specify an explicit value for android:exported when the corresponding
+component has an intent filter defined. 
+</code></pre></div></div>
+<p>Add android:exported for all activities, services and broadcast receivers that use intent filters</p>
+
+<p>If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false.</p>
+
+<p>4	Apps can’t close system dialogs:
+To improve user control when interacting with apps and the system, the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12.
+If added, App crashes with a SecurityException.	
+add condition (Build.VERSION.SDK_INT &lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used. 
+  if (Build.VERSION.SDK_INT &lt;= Build.VERSION_CODES.R) {
+                    context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                }</p>
+
+<p>5	Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background.	
+If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException.</p>
+
+<p>Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background</p>
+
+<p>Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called.</p>
+
+<p>Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created.</p>
+
+<p>The mutability of each PendingIntent object that app has created must be specified.</p>
+
+<p>Use the PendingIntent object created as part of building the notification.</p>
+
+<p>Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification)</p>
+
+<p>6	Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification.	When app is in the background, Video call activity won’t be started from the broadcast receiver or service	
+Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification.</p>
+
+<p>7	Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps. By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color).	
+The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App)</p>
+
+<p>The degraded or unintended experiences can be prevented  by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform.
+ https://developer.android.com/guide/topics/ui/splash-screen/migrate</p>
+
+<p>If you are migrating your app to support Android 12, also look for these changes which may break the way your app behaves: User experience change such as notifications and toast messages, Deprecated APIs, Camera preview on large screens, Security and Privacy changes such as Blocked Untrusted touch events,Performance improvements such as Restricted App Standby Bucket.</p>
+
+      
+    </div>
+  
+  
+    <footer class="entry-meta">
+      
+
+<span class="read-time">8 min read</span>
+
+      <time class="entry-date dt-published" datetime="2022-06-25T00:00:00+05:30">25 Jun 2022
+  </time>
+    </footer>
+  
+</article>
+
+          
+            
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <h3 class="entry-title p-name">
+      
         <a href="/2022/05/22/Joda-Lib.html" rel="bookmark">Then Joda, Now to Java 8 APIs
 </a>
       
@@ -306,10 +523,11 @@
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -535,6 +753,189 @@ return ZonedDateTime.ofInstant(instant, zone)
   <header class="entry-header">
     <h3 class="entry-title p-name">
       
+        <a href="/2022/06/25/Android12.html" rel="bookmark">Android 12 Support
+</a>
+      
+    </h3>
+    
+  </header>
+  
+    <div class="entry-excerpt p-summary">
+      
+        <p>Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022.</p>
+<blockquote>
+  <p>Starting in August 2022, new apps must target API level 31 (Android 12) or above and adjust for behavioral changes. Wear OS apps must target API level 28 or higher.</p>
+</blockquote>
+
+<blockquote>
+  <p>Starting in November 2022, app updates must target API level 31 or above and adjust for behavioral changes in Android 12.</p>
+</blockquote>
+
+<p>With each release of Android, new features as well as behavior changes are introduced aimed at making it more helpful by improving User Experinence , more secure, and more performant. 
+The app may work exactly as expected out-of-the-box, but there are othercases where app needs to adapt to the platform changes.
+It is recommended to test how the changes may affect the app, work through all the flows and functionality while looking for issues and before testing it is good familiarize with the behavior changesand the changelog.
+How we migrated our app? : Important Updates in Android 12 which may impact the apps</p>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Update in Android 12</th>
+      <th>Impact Analysis</th>
+      <th>Solution Approach</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified</td>
+      <td>App crashes with exception java.lang.IllegalArgumentException: com.medtronic.mcms.connectandroid: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.</td>
+      <td>Replace PendingIntent.FLAG_UPDATE_CURRENT with PendingIntent.FLAG_IMMUTABLE. add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required Pending intents</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters,  you must explicitly declare the android:exported attribute for these app components.</td>
+      <td>Build fails with exception Manifest merger failed : Apps targeting Android 12 and higher are required to specify an explicit value for android:exported when the corresponding component has an intent filter defined.</td>
+      <td>Add android:exported for all activities, services and broadcast receivers that use intent filters  If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false.</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Apps can’t close system dialogs:To improve user control when interacting with apps and the system,  the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12.</td>
+      <td>App crashes with a SecurityException.</td>
+      <td>add condition (Build.VERSION.SDK_INT &lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used.</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background.</td>
+      <td>If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException. Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called.</td>
+      <td>Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created. The mutability of each PendingIntent object that app has created must be specified. Use the PendingIntent object created as part of building the notification. Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Bluetooth permissions: Android 12 introduces new permissions that let apps scan for nearby Bluetooth devices without requesting location permissions.</td>
+      <td>App crashes with SecurityException: Need android.permission.BLUETOOTH_SCAN permission when try to do bluetooth scan operation.</td>
+      <td>Declare the following permissions in your app’s manifest file:  If your app looks for Bluetooth devices, such as BLE peripherals, declare the BLUETOOTH_SCAN permission.  If your app communicates with already-paired Bluetooth devices, declare the BLUETOOTH_CONNECT permission.  If your app uses Bluetooth scan results to derive physical location, declare the ACCESS_FINE_LOCATION permission.</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification.</td>
+      <td>When app is in the background, Video call activity won’t be started from the broadcast receiver or service</td>
+      <td>Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification.</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps.  By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color).</td>
+      <td>The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App)</td>
+      <td>The degraded or unintended experiences can be prevented  by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Bluetooth permissions:</p>
+
+<p>When an app upgrades to target Android 12 or higher, the app must request the new Bluetooth permissions explicitly. 
+Android 12 introduces the following Bluetooth permissions, which replace the BLUETOOTH and BLUETOOTH_ADMIN permissions:</p>
+
+<p>BLUETOOTH_SCAN: Allows apps to discover and pair nearby Bluetooth devices.</p>
+
+<p>BLUETOOTH_ADVERTISE: Allows apps to advertise to nearby Bluetooth devices.</p>
+
+<p>BLUETOOTH_CONNECT: Allows apps to connect to paired Bluetooth devices.</p>
+
+<p>These permissions are part of the new NEARBY_DEVICES runtime permission group. This permission group enables use cases such as connecting to a smartwatch without requiring the LOCATION runtime permission.</p>
+
+<p>These new permissions are app compatible and no changes are required for apps running on Android 11 or lower. For legacy apps targeting Android 11 or lower, the platform automatically translates requests for the legacy Bluetooth permissions into requests for the new permissions.</p>
+
+<p>Approximate location: 
+When using an app that targets Android 12 or higher, users can request that the app have access to only approximate location information. 
+If your app targets Android 12 or higher and requests the ACCESS_FINE_LOCATION runtime permission, you must also request the ACCESS_COARSE_LOCATION permission. 
+You must include both permissions in a single runtime request. 
+When your app requests both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION, the system permissions dialog includes the following new options for the user.</p>
+
+<p>Precise: Provides access to precise location information. 
+Approximate: Provides access only to approximate location information.</p>
+
+<p><a href="">Check this</a> for more details.</p>
+
+<p>2	Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified.
+Usually we declare PendingIntents with flags indicating how a PendingIntent should be retrieved using FLAG_UPDATE_CURRENT or  FLAG_ONE_SHOT, FLAG_NO_CREATE, FLAG_CANCEL_CURRENT
+Now add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required PendingIntents along with the other flags.</p>
+
+<p>If not specified, App crashes with the following exception:
+<code class="language-plaintext highlighter-rouge">java.lang.IllegalArgumentException: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.</code></p>
+
+<p>Java
+Add <code class="language-plaintext highlighter-rouge">PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE</code> 
+Kotlin
+Add <code class="language-plaintext highlighter-rouge">PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE</code></p>
+
+<p>3	Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters, 
+you must explicitly declare the android:exported attribute for these app components.	
+If not added, Build fails with exception</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Manifest merger failed : Apps targeting Android 12 and higher are required
+to specify an explicit value for android:exported when the corresponding
+component has an intent filter defined. 
+</code></pre></div></div>
+<p>Add android:exported for all activities, services and broadcast receivers that use intent filters</p>
+
+<p>If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false.</p>
+
+<p>4	Apps can’t close system dialogs:
+To improve user control when interacting with apps and the system, the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12.
+If added, App crashes with a SecurityException.	
+add condition (Build.VERSION.SDK_INT &lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used. 
+  if (Build.VERSION.SDK_INT &lt;= Build.VERSION_CODES.R) {
+                    context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+                }</p>
+
+<p>5	Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background.	
+If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException.</p>
+
+<p>Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background</p>
+
+<p>Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called.</p>
+
+<p>Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created.</p>
+
+<p>The mutability of each PendingIntent object that app has created must be specified.</p>
+
+<p>Use the PendingIntent object created as part of building the notification.</p>
+
+<p>Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification)</p>
+
+<p>6	Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification.	When app is in the background, Video call activity won’t be started from the broadcast receiver or service	
+Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification.</p>
+
+<p>7	Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps. By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color).	
+The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App)</p>
+
+<p>The degraded or unintended experiences can be prevented  by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform.
+ https://developer.android.com/guide/topics/ui/splash-screen/migrate</p>
+
+<p>If you are migrating your app to support Android 12, also look for these changes which may break the way your app behaves: User experience change such as notifications and toast messages, Deprecated APIs, Camera preview on large screens, Security and Privacy changes such as Blocked Untrusted touch events,Performance improvements such as Restricted App Standby Bucket.</p>
+
+      
+    </div>
+  
+  
+    <footer class="entry-meta">
+      
+
+<span class="read-time">8 min read</span>
+
+      <time class="entry-date dt-published" datetime="2022-06-25T00:00:00+05:30">25 Jun 2022
+  </time>
+    </footer>
+  
+</article>
+
+          
+            
+
+<article class="entry h-entry">
+  <header class="entry-header">
+    <h3 class="entry-title p-name">
+      
         <a href="/2022/05/22/Joda-Lib.html" rel="bookmark">Then Joda, Now to Java 8 APIs
 </a>
       
@@ -548,10 +949,11 @@ return ZonedDateTime.ofInstant(instant, zone)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -799,6 +1201,40 @@ pendingIntent)
     
   
     
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
       <section id="java8" class="taxonomy-section">
         <h2 class="taxonomy-title">Java8</h2>
         <div class="entries-list">
@@ -822,10 +1258,11 @@ pendingIntent)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -1096,10 +1533,11 @@ pendingIntent)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -1786,10 +2224,11 @@ pendingIntent)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -1982,10 +2421,11 @@ return ZonedDateTime.ofInstant(instant, zone)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -2178,10 +2618,11 @@ return ZonedDateTime.ofInstant(instant, zone)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'
@@ -2374,10 +2815,11 @@ return ZonedDateTime.ofInstant(instant, zone)
 <blockquote>
   <p>Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
-Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.</p>
+From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).</p>
 </blockquote>
+
+<p>Our project minSdk is set to 23 (Android 6/7)
+Joda would solve the problem of providing one set of APIs which can be used across all OS versions.</p>
 
 <p>Add the dependency</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>implementation 'net.danlew:android.joda:2.10.14'

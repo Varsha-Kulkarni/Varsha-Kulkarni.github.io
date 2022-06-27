@@ -18,4 +18,9 @@ var store = [{
         "excerpt":"Why Joda? Joda-Time provides a quality replacement for the Java date and time classes.The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.From Java SE...","categories": [],
         "tags": ["Android","targetSdk","Date","Joda-time","Java8","java.time","sugar","desugar"],
         "url": "http://localhost:4001/2022/05/22/Joda-Lib.html"
+      },{
+        "title": "Android 12 Support",
+        "excerpt":"Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022. Starting in August 2022, new apps must target API level 31 (Android 12) or above and adjust for behavioral changes. Wear OS apps must target API level 28 or higher. Starting in November 2022, app...","categories": [],
+        "tags": ["Android","targetSdk"],
+        "url": "http://localhost:4001/2022/06/25/Android12.html"
       }]
