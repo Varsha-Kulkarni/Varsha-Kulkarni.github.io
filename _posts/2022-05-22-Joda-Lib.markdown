@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Then Joda, Now to Java 8 APIs"
+title:  "Then Joda, Now Java 8 APIs"
 tags: Android targetSdk Date Joda-time Java8 java.time sugar desugar 
 ---
 
