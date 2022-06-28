@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Accessibility on Android: make apps accessible to all the users | Varsha Kulkarni</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Accessibility on Android: make apps accessible to all the users" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View. In most cases, set element’s contentDescription attribute, without including its type/role. Screen readers automatically announce both the element’s description and type. For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate” Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title. Exclude TextViews, since Android accessibility services automatically announce the text itself as the description. Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView or an element which is not clickable in production but used for testing purpose. labelFor can be used along with EditText fields, to announce what the EditText field is meant for. For example Username: [EditText] add labelFor attribute to TextView created for Username: label which is a label for Username EditText. &lt;TextView android:id = &quot;@+id/tvUserName ... android:labelFor = &quot;id/etUserName&quot;/&gt; &lt;EditText android:id = &quot;@+id/etUserName ... /&gt; When required to be added description of an item dynamically we can make use of StringBuilder val contentDescription = StringBuilder() contentDescription.append(&quot;list item&quot;).append(movieList[position]) listItemView.setContentDescription(contentDescription); To override default accessibility screen reader announcements, AccessibilityDelegate can be used on all the views. Examples:" />
+<meta property="og:description" content="Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View. In most cases, set element’s contentDescription attribute, without including its type/role. Screen readers automatically announce both the element’s description and type. For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate” Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title. Exclude TextViews, since Android accessibility services automatically announce the text itself as the description. Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView or an element which is not clickable in production but used for testing purpose. labelFor can be used along with EditText fields, to announce what the EditText field is meant for. For example Username: [EditText] add labelFor attribute to TextView created for Username: label which is a label for Username EditText. &lt;TextView android:id = &quot;@+id/tvUserName ... android:labelFor = &quot;id/etUserName&quot;/&gt; &lt;EditText android:id = &quot;@+id/etUserName ... /&gt; When required to be added description of an item dynamically we can make use of StringBuilder val contentDescription = StringBuilder() contentDescription.append(&quot;list item&quot;).append(movieList[position]) listItemView.setContentDescription(contentDescription); To override default accessibility screen reader announcements, AccessibilityDelegate can be used on all the views. Examples:" />
+<link rel="canonical" href="http://localhost:4001/2022/06/28/Accessibility.html" />
+<meta property="og:url" content="http://localhost:4001/2022/06/28/Accessibility.html" />
+<meta property="og:site_name" content="Varsha Kulkarni" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-06-28T00:00:00+05:30" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Accessibility on Android: make apps accessible to all the users" />
+<meta name="twitter:site" content="@varshamkulkarni" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-06-28T00:00:00+05:30","datePublished":"2022-06-28T00:00:00+05:30","description":"Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View. In most cases, set element’s contentDescription attribute, without including its type/role. Screen readers automatically announce both the element’s description and type. For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate” Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title. Exclude TextViews, since Android accessibility services automatically announce the text itself as the description. Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView or an element which is not clickable in production but used for testing purpose. labelFor can be used along with EditText fields, to announce what the EditText field is meant for. For example Username: [EditText] add labelFor attribute to TextView created for Username: label which is a label for Username EditText. &lt;TextView android:id = &quot;@+id/tvUserName ... android:labelFor = &quot;id/etUserName&quot;/&gt; &lt;EditText android:id = &quot;@+id/etUserName ... /&gt; When required to be added description of an item dynamically we can make use of StringBuilder val contentDescription = StringBuilder() contentDescription.append(&quot;list item&quot;).append(movieList[position]) listItemView.setContentDescription(contentDescription); To override default accessibility screen reader announcements, AccessibilityDelegate can be used on all the views. Examples:","headline":"Accessibility on Android: make apps accessible to all the users","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4001/2022/06/28/Accessibility.html"},"url":"http://localhost:4001/2022/06/28/Accessibility.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Varsha Kulkarni" href="/feed.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  accessibility-on-android-make-apps-accessible-to-all-the-users">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/">Home</a></li><li><a href="/posts/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">Varsha Kulkarni</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">Errs Unravelled</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">Accessibility on Android: make apps accessible to all the users
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><div class="author-info">
+
+<span class="read-time">1 min read</span>
+
+    <time class="page-date dt-published" datetime="2022-06-28T00:00:00+05:30"><a class="u-url" href="">28 Jun 2022</a>
+</time>
+
+  </div>
+</div>
+
+        
+
+        
+  <h3 class="page-taxonomies-title">Tags</h3>
+  <ul class="page-taxonomies"><li class="page-taxonomy">Android</li><li class="page-taxonomy">accessibility</li><li class="page-taxonomy">contentDescription</li><li class="page-taxonomy">ScreenReader</li><li class="page-taxonomy">TalkBack</li>
+  </ul>
+
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <h1 id="screen-reader">Screen Reader:</h1>
+<ul>
+  <li>When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus.</li>
+  <li>It is recommended use views that Android provides which include view’s role and content required by Accessibility service.
+If you need a custom button, you extend the Button rather than starting from scratch with a View.</li>
+  <li>In most cases, set element’s contentDescription attribute, without including its type/role. 
+Screen readers automatically announce both the element’s description and type.
+For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate”</li>
+  <li>Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title.</li>
+  <li>Exclude TextViews, since Android accessibility services automatically announce the text itself as the description.</li>
+  <li>Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView 
+or an element which is not clickable in production but used for testing purpose.</li>
+  <li>labelFor can be used along with EditText fields, to announce what the EditText field is meant for.
+For example Username: [EditText]
+add labelFor attribute to TextView created for Username: label which is a label for Username EditText.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;TextView
+android:id = "@+id/tvUserName 
+...
+android:labelFor = "id/etUserName"/&gt;
+&lt;EditText
+android:id = "@+id/etUserName
+...
+/&gt;
+</code></pre></div></div>
+<ul>
+  <li>When required to be added description of an item dynamically we can make use of StringBuilder</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val contentDescription = StringBuilder()
+contentDescription.append("list item").append(movieList[position])
+listItemView.setContentDescription(contentDescription);
+</code></pre></div></div>
+
+<ul>
+  <li>To override default accessibility screen reader announcements, AccessibilityDelegate can be used on all the views.
+Examples:</li>
+</ul>
+
+<p>For a camera <code class="language-plaintext highlighter-rouge">ToggleButton</code>, announce as “Turn off camera button, double tap to toggle”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cameraToggleButton.setChecked(true);
+cameraToggleButton.setTextOn("Turn Off");
+cameraToggleButton.setTextOff("Turn On");
+
+ViewCompat.setAccessibilityDelegate(cameraToggleButton, new AccessibilityDelegateCompat() {
+
+     private boolean didPerformAccessibilityAction = false
+
+     @Override
+     public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+      super.onInitializeAccessibilityNodeInfo(host, info);
+       info.contentDescription = "Camera"
+       info.setRoleDescription = "Button"
+      
+     }
+});
+</code></pre></div></div>
+
+<p>On a Movie list item, announce as “double tap to view movie detail” and “long tap and hold to add to favorites”</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ViewCompat.setAccessibilityDelegate(itemView, new AccessibilityDelegateCompat() {
+
+override fun onInitializeAccessibilityNodeInfo(
+      host: View, info: AccessibilityNodeInfoCompat) {
+    super.onInitializeAccessibilityNodeInfo(host, info)
+    val click = 
+      AccessibilityNodeInfoCompat.AccessibilityActionCompat(
+          AccessibilityNodeInfo.ACTION_CLICK,"view movie detail")
+    val longClick = 
+      AccessibilityNodeInfoCompat.AccessibilityActionCompat(
+          AccessibilityNodeInfo.ACTION_LONG_CLICK, "add to favorites")
+    info.addAction(click)
+    info.addAction(longClick)
+  }
+
+});
+</code></pre></div></div>
+
+        </div>
+
+        
+          <div class="page-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4001%2F2022%2F06%2F28%2FAccessibility.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--facebook btn--small"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i> <span>Share</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Accessibility+on+Android%3A+make+apps+accessible+to+all+the+users%20http%3A%2F%2Flocalhost%3A4001%2F2022%2F06%2F28%2FAccessibility.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4001%2F2022%2F06%2F28%2FAccessibility.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Accessibility+on+Android%3A+make+apps+accessible+to+all+the+users&url=http%3A%2F%2Flocalhost%3A4001%2F2022%2F06%2F28%2FAccessibility.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/2022/06/25/Android12.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Android 12 Support
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/varshamkulkarni"><i class="fab fa-twitter fa-2x" title="Twitter"></i></a><a class="social-icon" href="https://github.com/Varsha-Kulkarni"><i class="fab fa-github fa-2x" title="GitHub"></i></a><a class="social-icon" href="https://www.linkedin.com/in/varshakulkarni131184"><i class="fab fa-linkedin fa-2x" title="LinkedIn"></i></a><a class="social-icon" href="https://stackoverflow.com/users/1169441"><i class="fab fa-stack-overflow fa-2x" title="Stackoverflow"></i></a><a class="social-icon" href="/feed.xml"><i class="fas fa-rss fa-2x" title="Feed"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2022 Varsha Kulkarni. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+  </body>
+
+</html>
