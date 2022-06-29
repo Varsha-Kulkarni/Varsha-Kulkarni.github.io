@@ -1,18 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4001/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4001/" rel="alternate" type="text/html" /><updated>2022-06-29T00:46:45+05:30</updated><id>http://localhost:4001/feed.xml</id><title type="html">Varsha Kulkarni</title><subtitle>Errs Unravelled</subtitle><entry><title type="html">Accessibility on Android: make apps accessible to all the users</title><link href="http://localhost:4001/2022/06/28/Accessibility.html" rel="alternate" type="text/html" title="Accessibility on Android: make apps accessible to all the users" /><published>2022-06-28T00:00:00+05:30</published><updated>2022-06-28T00:00:00+05:30</updated><id>http://localhost:4001/2022/06/28/Accessibility</id><content type="html" xml:base="http://localhost:4001/2022/06/28/Accessibility.html">&lt;h1 id=&quot;screen-reader&quot;&gt;Screen Reader:&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4001/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4001/" rel="alternate" type="text/html" /><updated>2022-06-29T13:44:17+05:30</updated><id>http://localhost:4001/feed.xml</id><title type="html">Varsha Kulkarni</title><subtitle>Errs Unravelled</subtitle><entry><title type="html">Accessibility on Android: make apps accessible to all the users</title><link href="http://localhost:4001/2022/06/28/Accessibility.html" rel="alternate" type="text/html" title="Accessibility on Android: make apps accessible to all the users" /><published>2022-06-28T00:00:00+05:30</published><updated>2022-06-28T00:00:00+05:30</updated><id>http://localhost:4001/2022/06/28/Accessibility</id><content type="html" xml:base="http://localhost:4001/2022/06/28/Accessibility.html">&lt;h1 id=&quot;screen-reader&quot;&gt;Screen Reader:&lt;/h1&gt;
 &lt;ul&gt;
-  &lt;li&gt;When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus.&lt;/li&gt;
-  &lt;li&gt;It is recommended use views that Android provides which include view’s role and content required by Accessibility service.
-If you need a custom button, you extend the Button rather than starting from scratch with a View.&lt;/li&gt;
-  &lt;li&gt;In most cases, set element’s contentDescription attribute, without including its type/role. 
+  &lt;li&gt;
+    &lt;p&gt;When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;It is recommended use views that Android provides which include view’s role and content required by Accessibility service.
+If you need a custom button, you extend the Button rather than starting from scratch with a View.
+&lt;!--more--&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In most cases, set element’s contentDescription attribute, without including its type/role. 
 Screen readers automatically announce both the element’s description and type.
-For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate”&lt;/li&gt;
-  &lt;li&gt;Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title.&lt;/li&gt;
-  &lt;li&gt;Exclude TextViews, since Android accessibility services automatically announce the text itself as the description.&lt;/li&gt;
-  &lt;li&gt;Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView 
-or an element which is not clickable in production but used for testing purpose.&lt;/li&gt;
-  &lt;li&gt;labelFor can be used along with EditText fields, to announce what the EditText field is meant for.
+For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Exclude TextViews, since Android accessibility services automatically announce the text itself as the description.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView 
+or an element which is not clickable in production but used for testing purpose.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;labelFor can be used along with EditText fields, to announce what the EditText field is meant for.
 For example Username: [EditText]
-add labelFor attribute to TextView created for Username: label which is a label for Username EditText.&lt;/li&gt;
+add labelFor attribute to TextView created for Username: label which is a label for Username EditText.&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;TextView
@@ -76,7 +91,7 @@ override fun onInitializeAccessibilityNodeInfo(
   }
 
 });
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="accessibility" /><category term="contentDescription" /><category term="ScreenReader" /><category term="TalkBack" /><summary type="html">Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View. In most cases, set element’s contentDescription attribute, without including its type/role. Screen readers automatically announce both the element’s description and type. For example for a Camera ImageButton, set contentDescription as “Camera”. It will announce it as “Camera button, double tap to activate” Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title. Exclude TextViews, since Android accessibility services automatically announce the text itself as the description. Set android:importantForAccessibility attributes to “no” if there’s element added for decoration purpose only, for example background ImageView or an element which is not clickable in production but used for testing purpose. labelFor can be used along with EditText fields, to announce what the EditText field is meant for. For example Username: [EditText] add labelFor attribute to TextView created for Username: label which is a label for Username EditText. &amp;lt;TextView android:id = &quot;@+id/tvUserName ... android:labelFor = &quot;id/etUserName&quot;/&amp;gt; &amp;lt;EditText android:id = &quot;@+id/etUserName ... /&amp;gt; When required to be added description of an item dynamically we can make use of StringBuilder val contentDescription = StringBuilder() contentDescription.append(&quot;list item&quot;).append(movieList[position]) listItemView.setContentDescription(contentDescription); To override default accessibility screen reader announcements, AccessibilityDelegate can be used on all the views. Examples:</summary></entry><entry><title type="html">Android 12 Support</title><link href="http://localhost:4001/2022/06/25/Android12.html" rel="alternate" type="text/html" title="Android 12 Support" /><published>2022-06-25T00:00:00+05:30</published><updated>2022-06-25T00:00:00+05:30</updated><id>http://localhost:4001/2022/06/25/Android12</id><content type="html" xml:base="http://localhost:4001/2022/06/25/Android12.html">&lt;p&gt;Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="accessibility" /><category term="contentDescription" /><category term="ScreenReader" /><category term="TalkBack" /><summary type="html">Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View.</summary></entry><entry><title type="html">Android 12 Support</title><link href="http://localhost:4001/2022/06/25/Android12.html" rel="alternate" type="text/html" title="Android 12 Support" /><published>2022-06-25T00:00:00+05:30</published><updated>2022-06-25T00:00:00+05:30</updated><id>http://localhost:4001/2022/06/25/Android12</id><content type="html" xml:base="http://localhost:4001/2022/06/25/Android12.html">&lt;p&gt;Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022.&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;Starting in August 2022, new apps must target API level 31 (Android 12) or above and adjust for behavioral changes. Wear OS apps must target API level 28 or higher.&lt;/p&gt;
 &lt;/blockquote&gt;

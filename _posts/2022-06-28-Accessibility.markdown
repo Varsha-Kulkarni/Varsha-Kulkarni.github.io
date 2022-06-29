@@ -1,20 +1,28 @@
 ---
 layout: post
+excerpt_separator: "<!--more-->"
 title:  "Accessibility on Android: make apps accessible to all the users"
 tags: Android accessibility contentDescription ScreenReader TalkBack
 ---
 
 # Screen Reader: 
 - When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus.
+
 - It is recommended use views that Android provides which include view's role and content required by Accessibility service.
 If you need a custom button, you extend the Button rather than starting from scratch with a View.
+<!--more-->
+
 - In most cases, set element's contentDescription attribute, without including its type/role. 
 Screen readers automatically announce both the element's description and type.
 For example for a Camera ImageButton, set contentDescription as "Camera". It will announce it as "Camera button, double tap to activate"
+
 - Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title.
+
 - Exclude TextViews, since Android accessibility services automatically announce the text itself as the description.
+
 - Set android:importantForAccessibility attributes to "no" if there's element added for decoration purpose only, for example background ImageView 
 or an element which is not clickable in production but used for testing purpose.
+
 - labelFor can be used along with EditText fields, to announce what the EditText field is meant for.
 For example Username: [EditText]
 add labelFor attribute to TextView created for Username: label which is a label for Username EditText.
