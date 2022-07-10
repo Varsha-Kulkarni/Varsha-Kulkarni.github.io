@@ -8,7 +8,7 @@ tags: Android accessibility contentDescription ScreenReader TalkBack
 # Screen Reader: 
 - When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus.
 
-- It is recommended use views that Android provides which include view's role and content required by Accessibility service.
+- It is recommended to use views that Android provides which include view's role and content required by Accessibility service.
 If you need a custom button, you extend the Button rather than starting from scratch with a View.
 <!--more-->
 
@@ -16,7 +16,7 @@ If you need a custom button, you extend the Button rather than starting from scr
 Screen readers automatically announce both the element's description and type.
 For example for a Camera ImageButton, set contentDescription as "Camera". It will announce it as "Camera button, double tap to activate"
 
-- Make sure contentDescription is unique, for example on a recyclerView list of movie, contentDescription of each item could the movie title.
+- Make sure contentDescription is unique, for example in a list of movies, contentDescription of each item could the movie title.
 
 - Exclude TextViews, since Android accessibility services automatically announce the text itself as the description.
 
