@@ -1,3 +1,10 @@
+---
+layout: post
+excerpt_separator: "<!--more-->"
+title:  "Applinks on Android 12"
+tags: Android targetSdk applinks deeplinks assetlinks
+---
+
 If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created.
 Before Android 12 (API 31), adding intent filters under the `Activity` which needs to open on link clicking would open the app, may be with some amibguity.
  But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser.
