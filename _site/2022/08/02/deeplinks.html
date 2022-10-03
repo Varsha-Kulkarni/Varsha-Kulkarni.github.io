@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--
+    So Simple Jekyll Theme 3.2.0
+    Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+    Free for personal and commercial use under the MIT license
+    https://github.com/mmistakes/so-simple-theme/blob/master/LICENSE
+-->
+<html lang="en-US" class="no-js">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+
+  
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Deeplinks | Varsha Kulkarni</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Deeplinks" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created. Before Android 12 (API 31), adding intent filters under the Activity which needs to open on link clicking would open the app, may be with some amibguity. But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser." />
+<meta property="og:description" content="If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created. Before Android 12 (API 31), adding intent filters under the Activity which needs to open on link clicking would open the app, may be with some amibguity. But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser." />
+<link rel="canonical" href="http://localhost:4000/2022/08/02/deeplinks.html" />
+<meta property="og:url" content="http://localhost:4000/2022/08/02/deeplinks.html" />
+<meta property="og:site_name" content="Varsha Kulkarni" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-08-02T00:00:00+05:30" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Deeplinks" />
+<meta name="twitter:site" content="@varshamkulkarni" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-08-02T00:00:00+05:30","datePublished":"2022-08-02T00:00:00+05:30","description":"If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created. Before Android 12 (API 31), adding intent filters under the Activity which needs to open on link clicking would open the app, may be with some amibguity. But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser.","headline":"Deeplinks","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2022/08/02/deeplinks.html"},"url":"http://localhost:4000/2022/08/02/deeplinks.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  
+
+  <script>
+    /* Cut the mustard */
+    if ( 'querySelector' in document && 'addEventListener' in window ) {
+      document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + 'js';
+    }
+  </script>
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/skins/dark.css">
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i|Lora:400,400i,700,700i">
+  <link rel="alternate" type="application/atom+xml" title="Varsha Kulkarni" href="/feed.xml">
+<!-- start custom head snippets -->
+
+<!-- insert favicons. use http://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+</head>
+
+
+  <body class="layout--post  deeplinks">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#primary-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+  <div class="navigation-wrapper">
+    <a href="#menu-toggle" id="menu-toggle">Menu</a>
+    <nav id="primary-nav" class="site-nav animated drop">
+      <ul><li><a href="/">Home</a></li><li><a href="/posts/">Archives</a></li><li><a href="/tags/">Tags</a></li><li><a href="/search/">Search</a></li></ul>
+    </nav>
+  </div><!-- /.navigation-wrapper -->
+
+
+    <header class="masthead">
+  <div class="wrap">
+    
+    
+    
+      
+        <div class="site-title animated fadeIn"><a href="/">Varsha Kulkarni</a></div>
+      
+      <p class="site-description animated fadeIn" itemprop="description">Errs Unravelled</p>
+    
+  </div>
+</header><!-- /.masthead -->
+
+
+    <main id="main" class="main-content" aria-label="Content">
+  <article class="h-entry">
+    
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        
+        
+          <h1 id="page-title" class="page-title p-name">Deeplinks
+</h1>
+        
+      </header>
+
+      <div class="page-sidebar">
+        <div class="page-author h-card p-author"><div class="author-info">
+
+<span class="read-time">2 min read</span>
+
+    <time class="page-date dt-published" datetime="2022-08-02T00:00:00+05:30"><a class="u-url" href="">2 Aug 2022</a>
+</time>
+
+  </div>
+</div>
+
+        
+
+        
+
+      </div>
+
+      <div class="page-content">
+        <div class="e-content">
+          <p>If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created.
+Before Android 12 (API 31), adding intent filters under the <code class="language-plaintext highlighter-rouge">Activity</code> which needs to open on link clicking would open the app, may be with some amibguity.
+ But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser.</p>
+
+<p>Follow the step from Android documentation <a href="https://developer.android.com/training/app-links">here</a> and <a href="https://developer.android.com/studio/write/app-link-indexing">here</a></p>
+
+<p>Things to note here:</p>
+<ul>
+  <li>If you are using multple domains ensure that all the domains have hosted correct assetlinks.json.</li>
+  <li>If verification of under one domain fails, then entire verification fails.
+    <blockquote>
+      <p>Note: On Android 11 (API level 30) and lower, the system establishes your app as the default handler for the specified URL patterns only if it finds a matching Digital Asset Links file for all hosts in the manifest.</p>
+    </blockquote>
+  </li>
+  <li>Install the app through adb, or run the following command, open logcat and see the verification process working.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ adb shell pm verify-app-links --re-verify &lt;PACKAGE_NAME&gt;
+</code></pre></div></div>
+<p>Filter with <strong>IntentFilterIntentOp</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>I/IntentFilterIntentOp: Verification 23 complete. Success:true. Failed hosts:. [CONTEXT service_id=244 ]
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Make sure the sha256_cert_fingerprints are correct.
+sha256_cert_fingerprints of debug &amp; release keystore are different.
+If only release fingerprints are added on assetlinks.json, the verification doesn’t work on debug version. so adb shell pm get-app-links <PACKAGE_NAME> returns legacy_failure.
+It will work if both fingerprints are added(debug &amp; release) on assetlinks.json</PACKAGE_NAME></p>
+  </li>
+  <li>
+    <p>Ensure there are no syntax errors or unnecessary spaces or special characters added to assetlinks.json
+It is better to use App Links Assistant tool provided by Android Studio to create this file instead of manually creating.
+For testing the assetlinks.json statements are correct, use <a href="https://developers.google.com/digital-asset-links/tools/generator">this</a></p>
+  </li>
+</ul>
+
+<p>If verifying manually, the typical output expected:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ adb shell pm get-app-links --user cur
+ com.example
+  com.example:
+    ID: 90a79cb0-b63c-4ffa-aeb7-b3ad109a7272
+    Signatures: [ED:64:B4:70:53:31:7E:C0:F4:99:9B:F9:49:AA:D1:0F:1D:63:75:B1:CB:03:DD:5D:D7:BC:E3:E2:7D:2E:00:29]
+    Domain verification state:
+      api.prod.example.com: legacy_failure
+      api.test.example.com: legacy_failure
+      api.dev.example.com: legacy_failure
+    User 0:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          api.prod.example.com
+          api.test.example.com
+          api.dev.example.com
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ adb shell pm set-app-links --package com.example 0 all
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ adb shell pm get-app-links --user cur
+ com.example
+  com.example:
+    ID: 90a79cb0-b63c-4ffa-aeb7-b3ad109a7272
+    Signatures: [ED:64:B4:70:53:31:7E:C0:F4:99:9B:F9:49:AA:D1:0F:1D:63:75:B1:CB:03:DD:5D:D7:BC:E3:E2:7D:2E:00:29]
+    Domain verification state:
+      api.prod.example.com: none
+      api.test.example.com: none
+      api.dev.example.com: none
+    User 0:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          api.prod.example.com
+          api.test.example.com
+          api.dev.example.com
+		  
+</code></pre></div></div>
+
+<p>Give some time for it to complete the verification process</p>
+
+<p>$ adb shell pm get-app-links –user cur
+ com.example
+  com.example:
+    ID: 4f4f913e-c4be-4b03-b782-9d6b9233396f
+    Signatures: [ED:64:B4:70:53:31:7E:C0:F4:99:9B:F9:49:AA:D1:0F:1D:63:75:B1:CB:03:DD:5D:D7:BC:E3:E2:7D:2E:00:29]
+    Domain verification state:
+      api.prod.example.com: verified
+      api.test.example.com: verified
+      api.dev.example.com: verified
+    User 0:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          api.prod.example.com
+          api.test.example.com
+          api.dev.example.com</p>
+
+<p>I have spent hours debugging applinks which failed to open the app, instead it would try it on browser on Android 12. There are some blog posts around this which helped me troubleshooting.</p>
+
+<p>https://zarah.dev/2022/02/08/android12-deeplinks.html
+https://handstandsam.com/2017/07/11/troubleshooting-auto-verification-of-seamless-android-app-deep-linking/</p>
+
+<p>With the above steps followed, it will also resolve the ambiguity on older OS versions, open the exact intended app.</p>
+
+        </div>
+
+        
+          <div class="page-share">
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022%2F08%2F02%2Fdeeplinks.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--facebook btn--small"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i> <span>Share</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Deeplinks%20http%3A%2F%2Flocalhost%3A4000%2F2022%2F08%2F02%2Fdeeplinks.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--twitter btn--small"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i> <span>Tweet</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022%2F08%2F02%2Fdeeplinks.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--linkedin btn--small"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> <span>LinkedIn</span></a>
+  <a href="https://reddit.com/submit?title=Deeplinks&url=http%3A%2F%2Flocalhost%3A4000%2F2022%2F08%2F02%2Fdeeplinks.html" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" class="btn btn--reddit btn--small"><i class="fab fa-fw fa-reddit" aria-hidden="true"></i> <span>Reddit</span></a>
+</div>
+
+        
+
+        
+
+        <nav class="page-pagination" role="navigation">
+  
+    <a class="page-previous" href="/2022/06/28/Accessibility.html">
+      <h4 class="page-pagination-label">Previous</h4>
+      <span class="page-pagination-title">
+        <i class="fas fa-arrow-left"></i> Accessibility on Android: make apps accessible to all the users
+
+      </span>
+    </a>
+  
+
+  
+</nav>
+
+      </div>
+    </div>
+  </article>
+</main>
+
+
+    <footer id="footer" class="site-footer">
+  <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+<div class="social-icons"><a class="social-icon" href="https://twitter.com/varshamkulkarni"><i class="fab fa-twitter fa-2x" title="Twitter"></i></a><a class="social-icon" href="https://github.com/Varsha-Kulkarni"><i class="fab fa-github fa-2x" title="GitHub"></i></a><a class="social-icon" href="https://www.linkedin.com/in/varshakulkarni131184"><i class="fab fa-linkedin fa-2x" title="LinkedIn"></i></a><a class="social-icon" href="https://stackoverflow.com/users/1169441"><i class="fab fa-stack-overflow fa-2x" title="Stackoverflow"></i></a><a class="social-icon" href="/feed.xml"><i class="fas fa-rss fa-2x" title="Feed"></i></a></div><div class="copyright">
+    
+      <p>&copy; 2022 Varsha Kulkarni. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://github.com/mmistakes/so-simple-theme" rel="nofollow">So Simple</a>.</p>
+    
+  </div>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.12/js/all.js"></script>
+
+
+  </body>
+
+</html>

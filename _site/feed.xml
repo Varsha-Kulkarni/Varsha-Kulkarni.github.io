@@ -1,4 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4001/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4001/" rel="alternate" type="text/html" /><updated>2022-06-29T13:44:17+05:30</updated><id>http://localhost:4001/feed.xml</id><title type="html">Varsha Kulkarni</title><subtitle>Errs Unravelled</subtitle><entry><title type="html">Accessibility on Android: make apps accessible to all the users</title><link href="http://localhost:4001/2022/06/28/Accessibility.html" rel="alternate" type="text/html" title="Accessibility on Android: make apps accessible to all the users" /><published>2022-06-28T00:00:00+05:30</published><updated>2022-06-28T00:00:00+05:30</updated><id>http://localhost:4001/2022/06/28/Accessibility</id><content type="html" xml:base="http://localhost:4001/2022/06/28/Accessibility.html">&lt;h1 id=&quot;screen-reader&quot;&gt;Screen Reader:&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2022-10-03T22:45:20+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Varsha Kulkarni</title><subtitle>Errs Unravelled</subtitle><entry><title type="html">Deeplinks</title><link href="http://localhost:4000/2022/08/02/deeplinks.html" rel="alternate" type="text/html" title="Deeplinks" /><published>2022-08-02T00:00:00+05:30</published><updated>2022-08-02T00:00:00+05:30</updated><id>http://localhost:4000/2022/08/02/deeplinks</id><content type="html" xml:base="http://localhost:4000/2022/08/02/deeplinks.html">&lt;p&gt;If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created.
+Before Android 12 (API 31), adding intent filters under the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Activity&lt;/code&gt; which needs to open on link clicking would open the app, may be with some amibguity.
+ But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser.&lt;/p&gt;
+
+&lt;p&gt;Follow the step from Android documentation &lt;a href=&quot;https://developer.android.com/training/app-links&quot;&gt;here&lt;/a&gt; and &lt;a href=&quot;https://developer.android.com/studio/write/app-link-indexing&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Things to note here:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;If you are using multple domains ensure that all the domains have hosted correct assetlinks.json.&lt;/li&gt;
+  &lt;li&gt;If verification of under one domain fails, then entire verification fails.
+    &lt;blockquote&gt;
+      &lt;p&gt;Note: On Android 11 (API level 30) and lower, the system establishes your app as the default handler for the specified URL patterns only if it finds a matching Digital Asset Links file for all hosts in the manifest.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Install the app through adb, or run the following command, open logcat and see the verification process working.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ adb shell pm verify-app-links --re-verify &amp;lt;PACKAGE_NAME&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Filter with &lt;strong&gt;IntentFilterIntentOp&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;I/IntentFilterIntentOp: Verification 23 complete. Success:true. Failed hosts:. [CONTEXT service_id=244 ]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Make sure the sha256_cert_fingerprints are correct.
+sha256_cert_fingerprints of debug &amp;amp; release keystore are different.
+If only release fingerprints are added on assetlinks.json, the verification doesn’t work on debug version. so adb shell pm get-app-links &lt;PACKAGE_NAME&gt; returns legacy_failure.
+It will work if both fingerprints are added(debug &amp;amp; release) on assetlinks.json&lt;/PACKAGE_NAME&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Ensure there are no syntax errors or unnecessary spaces or special characters added to assetlinks.json
+It is better to use App Links Assistant tool provided by Android Studio to create this file instead of manually creating.
+For testing the assetlinks.json statements are correct, use &lt;a href=&quot;https://developers.google.com/digital-asset-links/tools/generator&quot;&gt;this&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If verifying manually, the typical output expected:&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ adb shell pm get-app-links --user cur
+ com.example
+  com.example:
+    ID: 90a79cb0-b63c-4ffa-aeb7-b3ad109a7272
+    Signatures: [ED:64:B4:70:53:31:7E:C0:F4:99:9B:F9:49:AA:D1:0F:1D:63:75:B1:CB:03:DD:5D:D7:BC:E3:E2:7D:2E:00:29]
+    Domain verification state:
+      api.prod.example.com: legacy_failure
+      api.test.example.com: legacy_failure
+      api.dev.example.com: legacy_failure
+    User 0:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          api.prod.example.com
+          api.test.example.com
+          api.dev.example.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ adb shell pm set-app-links --package com.example 0 all
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ adb shell pm get-app-links --user cur
+ com.example
+  com.example:
+    ID: 90a79cb0-b63c-4ffa-aeb7-b3ad109a7272
+    Signatures: [ED:64:B4:70:53:31:7E:C0:F4:99:9B:F9:49:AA:D1:0F:1D:63:75:B1:CB:03:DD:5D:D7:BC:E3:E2:7D:2E:00:29]
+    Domain verification state:
+      api.prod.example.com: none
+      api.test.example.com: none
+      api.dev.example.com: none
+    User 0:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          api.prod.example.com
+          api.test.example.com
+          api.dev.example.com
+		  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Give some time for it to complete the verification process&lt;/p&gt;
+
+&lt;p&gt;$ adb shell pm get-app-links –user cur
+ com.example
+  com.example:
+    ID: 4f4f913e-c4be-4b03-b782-9d6b9233396f
+    Signatures: [ED:64:B4:70:53:31:7E:C0:F4:99:9B:F9:49:AA:D1:0F:1D:63:75:B1:CB:03:DD:5D:D7:BC:E3:E2:7D:2E:00:29]
+    Domain verification state:
+      api.prod.example.com: verified
+      api.test.example.com: verified
+      api.dev.example.com: verified
+    User 0:
+      Verification link handling allowed: true
+      Selection state:
+        Disabled:
+          api.prod.example.com
+          api.test.example.com
+          api.dev.example.com&lt;/p&gt;
+
+&lt;p&gt;I have spent hours debugging applinks which failed to open the app, instead it would try it on browser on Android 12. There are some blog posts around this which helped me troubleshooting.&lt;/p&gt;
+
+&lt;p&gt;https://zarah.dev/2022/02/08/android12-deeplinks.html
+https://handstandsam.com/2017/07/11/troubleshooting-auto-verification-of-seamless-android-app-deep-linking/&lt;/p&gt;
+
+&lt;p&gt;With the above steps followed, it will also resolve the ambiguity on older OS versions, open the exact intended app.&lt;/p&gt;</content><author><name></name></author><summary type="html">If you are trying to access your app from web, trying to click on a link which automatically opens the app without ambiguity, you need app links to be created. Before Android 12 (API 31), adding intent filters under the Activity which needs to open on link clicking would open the app, may be with some amibguity. But if targetSdk is set to 31, there are mandatory steps need to be followed, otherwise the link can open only on the browser.</summary></entry><entry><title type="html">Accessibility on Android: make apps accessible to all the users</title><link href="http://localhost:4000/2022/06/28/Accessibility.html" rel="alternate" type="text/html" title="Accessibility on Android: make apps accessible to all the users" /><published>2022-06-28T00:00:00+05:30</published><updated>2022-06-28T00:00:00+05:30</updated><id>http://localhost:4000/2022/06/28/Accessibility</id><content type="html" xml:base="http://localhost:4000/2022/06/28/Accessibility.html">&lt;h1 id=&quot;screen-reader&quot;&gt;Screen Reader:&lt;/h1&gt;
 &lt;ul&gt;
   &lt;li&gt;
     &lt;p&gt;When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus.&lt;/p&gt;
@@ -91,201 +194,7 @@ override fun onInitializeAccessibilityNodeInfo(
   }
 
 });
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="accessibility" /><category term="contentDescription" /><category term="ScreenReader" /><category term="TalkBack" /><summary type="html">Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View.</summary></entry><entry><title type="html">Android 12 Support</title><link href="http://localhost:4001/2022/06/25/Android12.html" rel="alternate" type="text/html" title="Android 12 Support" /><published>2022-06-25T00:00:00+05:30</published><updated>2022-06-25T00:00:00+05:30</updated><id>http://localhost:4001/2022/06/25/Android12</id><content type="html" xml:base="http://localhost:4001/2022/06/25/Android12.html">&lt;p&gt;Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022.&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;Starting in August 2022, new apps must target API level 31 (Android 12) or above and adjust for behavioral changes. Wear OS apps must target API level 28 or higher.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Starting in November 2022, app updates must target API level 31 or above and adjust for behavioral changes in Android 12.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;With each release of Android, new features as well as behavior changes are introduced aimed at making it more helpful by improving User Experinence , more secure, and more performant. 
-The app may work exactly as expected out-of-the-box, but there are othercases where app needs to adapt to the platform changes.
-It is recommended to test how the changes may affect the app, work through all the flows and functionality while looking for issues and before testing it is good familiarize with the behavior changesand the changelog.
-How we migrated our app? : Important Updates in Android 12 which may impact the apps&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Update in Android 12&lt;/th&gt;
-      &lt;th&gt;Impact Analysis&lt;/th&gt;
-      &lt;th&gt;Solution Approach&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified&lt;/td&gt;
-      &lt;td&gt;App crashes with exception java.lang.IllegalArgumentException: com.medtronic.mcms.connectandroid: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.&lt;/td&gt;
-      &lt;td&gt;Replace PendingIntent.FLAG_UPDATE_CURRENT with PendingIntent.FLAG_IMMUTABLE. add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required Pending intents&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters,  you must explicitly declare the android:exported attribute for these app components.&lt;/td&gt;
-      &lt;td&gt;Build fails with exception Manifest merger failed : Apps targeting Android 12 and higher are required to specify an explicit value for android:exported when the corresponding component has an intent filter defined.&lt;/td&gt;
-      &lt;td&gt;Add android:exported for all activities, services and broadcast receivers that use intent filters  If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;Apps can’t close system dialogs:To improve user control when interacting with apps and the system,  the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12.&lt;/td&gt;
-      &lt;td&gt;App crashes with a SecurityException.&lt;/td&gt;
-      &lt;td&gt;add condition (Build.VERSION.SDK_INT &amp;lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background.&lt;/td&gt;
-      &lt;td&gt;If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException. Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called.&lt;/td&gt;
-      &lt;td&gt;Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created. The mutability of each PendingIntent object that app has created must be specified. Use the PendingIntent object created as part of building the notification. Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification)&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;5&lt;/td&gt;
-      &lt;td&gt;Bluetooth permissions: Android 12 introduces new permissions that let apps scan for nearby Bluetooth devices without requesting location permissions.&lt;/td&gt;
-      &lt;td&gt;App crashes with SecurityException: Need android.permission.BLUETOOTH_SCAN permission when try to do bluetooth scan operation.&lt;/td&gt;
-      &lt;td&gt;Declare the following permissions in your app’s manifest file:  If your app looks for Bluetooth devices, such as BLE peripherals, declare the BLUETOOTH_SCAN permission.  If your app communicates with already-paired Bluetooth devices, declare the BLUETOOTH_CONNECT permission.  If your app uses Bluetooth scan results to derive physical location, declare the ACCESS_FINE_LOCATION permission.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;6&lt;/td&gt;
-      &lt;td&gt;Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification.&lt;/td&gt;
-      &lt;td&gt;When app is in the background, Video call activity won’t be started from the broadcast receiver or service&lt;/td&gt;
-      &lt;td&gt;Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;7&lt;/td&gt;
-      &lt;td&gt;Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps.  By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color).&lt;/td&gt;
-      &lt;td&gt;The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App)&lt;/td&gt;
-      &lt;td&gt;The degraded or unintended experiences can be prevented  by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform.&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Bluetooth permissions:&lt;/p&gt;
-
-&lt;p&gt;When an app upgrades to target Android 12 or higher, the app must request the new Bluetooth permissions explicitly. 
-Android 12 introduces the following Bluetooth permissions, which replace the BLUETOOTH and BLUETOOTH_ADMIN permissions:&lt;/p&gt;
-
-&lt;p&gt;BLUETOOTH_SCAN: Allows apps to discover and pair nearby Bluetooth devices.&lt;/p&gt;
-
-&lt;p&gt;BLUETOOTH_ADVERTISE: Allows apps to advertise to nearby Bluetooth devices.&lt;/p&gt;
-
-&lt;p&gt;BLUETOOTH_CONNECT: Allows apps to connect to paired Bluetooth devices.&lt;/p&gt;
-
-&lt;p&gt;These permissions are part of the new NEARBY_DEVICES runtime permission group. This permission group enables use cases such as connecting to a smartwatch without requiring the LOCATION runtime permission.&lt;/p&gt;
-
-&lt;p&gt;These new permissions are app compatible and no changes are required for apps running on Android 11 or lower. For legacy apps targeting Android 11 or lower, the platform automatically translates requests for the legacy Bluetooth permissions into requests for the new permissions.&lt;/p&gt;
-
-&lt;p&gt;Approximate location: 
-When using an app that targets Android 12 or higher, users can request that the app have access to only approximate location information. 
-If your app targets Android 12 or higher and requests the ACCESS_FINE_LOCATION runtime permission, you must also request the ACCESS_COARSE_LOCATION permission. 
-You must include both permissions in a single runtime request. 
-When your app requests both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION, the system permissions dialog includes the following new options for the user.&lt;/p&gt;
-
-&lt;p&gt;Precise: Provides access to precise location information. 
-Approximate: Provides access only to approximate location information.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;Check this&lt;/a&gt; for more details.&lt;/p&gt;
-
-&lt;p&gt;2	Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified.
-Usually we declare PendingIntents with flags indicating how a PendingIntent should be retrieved using FLAG_UPDATE_CURRENT or  FLAG_ONE_SHOT, FLAG_NO_CREATE, FLAG_CANCEL_CURRENT
-Now add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required PendingIntents along with the other flags.&lt;/p&gt;
-
-&lt;p&gt;If not specified, App crashes with the following exception:
-&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.lang.IllegalArgumentException: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent.&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Java
-Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE&lt;/code&gt; 
-Kotlin
-Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;3	Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters, 
-you must explicitly declare the android:exported attribute for these app components.	
-If not added, Build fails with exception&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Manifest merger failed : Apps targeting Android 12 and higher are required
-to specify an explicit value for android:exported when the corresponding
-component has an intent filter defined. 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Add android:exported for all activities, services and broadcast receivers that use intent filters&lt;/p&gt;
-
-&lt;p&gt;If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false.&lt;/p&gt;
-
-&lt;p&gt;4	Apps can’t close system dialogs:
-To improve user control when interacting with apps and the system, the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12.
-If added, App crashes with a SecurityException.	
-add condition (Build.VERSION.SDK_INT &amp;lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used. 
-  if (Build.VERSION.SDK_INT &amp;lt;= Build.VERSION_CODES.R) {
-                    context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                }&lt;/p&gt;
-
-&lt;p&gt;5	Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background.	
-If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException.&lt;/p&gt;
-
-&lt;p&gt;Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background&lt;/p&gt;
-
-&lt;p&gt;Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called.&lt;/p&gt;
-
-&lt;p&gt;Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created.&lt;/p&gt;
-
-&lt;p&gt;The mutability of each PendingIntent object that app has created must be specified.&lt;/p&gt;
-
-&lt;p&gt;Use the PendingIntent object created as part of building the notification.&lt;/p&gt;
-
-&lt;p&gt;Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification)&lt;/p&gt;
-
-&lt;p&gt;6	Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification.	When app is in the background, Video call activity won’t be started from the broadcast receiver or service	
-Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification.&lt;/p&gt;
-
-&lt;p&gt;7	Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps. By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color).	
-The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App)&lt;/p&gt;
-
-&lt;p&gt;The degraded or unintended experiences can be prevented  by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform.
- https://developer.android.com/guide/topics/ui/splash-screen/migrate&lt;/p&gt;
-
-&lt;p&gt;If you are migrating your app to support Android 12, also look for these changes which may break the way your app behaves: User experience change such as notifications and toast messages, Deprecated APIs, Camera preview on large screens, Security and Privacy changes such as Blocked Untrusted touch events,Performance improvements such as Restricted App Standby Bucket.&lt;/p&gt;</content><author><name></name></author><category term="Android" /><category term="targetSdk" /><summary type="html">Google now has made it mandatory to support Android 12 (targetSdkVersion(31) by end of 2022. Starting in August 2022, new apps must target API level 31 (Android 12) or above and adjust for behavioral changes. Wear OS apps must target API level 28 or higher. Starting in November 2022, app updates must target API level 31 or above and adjust for behavioral changes in Android 12. With each release of Android, new features as well as behavior changes are introduced aimed at making it more helpful by improving User Experinence , more secure, and more performant. The app may work exactly as expected out-of-the-box, but there are othercases where app needs to adapt to the platform changes. It is recommended to test how the changes may affect the app, work through all the flows and functionality while looking for issues and before testing it is good familiarize with the behavior changesand the changelog. How we migrated our app? : Important Updates in Android 12 which may impact the apps   Update in Android 12 Impact Analysis Solution Approach 1 Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified App crashes with exception java.lang.IllegalArgumentException: com.medtronic.mcms.connectandroid: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent. Replace PendingIntent.FLAG_UPDATE_CURRENT with PendingIntent.FLAG_IMMUTABLE. add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required Pending intents 2 Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters, you must explicitly declare the android:exported attribute for these app components. Build fails with exception Manifest merger failed : Apps targeting Android 12 and higher are required to specify an explicit value for android:exported when the corresponding component has an intent filter defined. Add android:exported for all activities, services and broadcast receivers that use intent filters If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false. 3 Apps can’t close system dialogs:To improve user control when interacting with apps and the system, the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12. App crashes with a SecurityException. add condition (Build.VERSION.SDK_INT &amp;lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used. 4 Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background. If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException. Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called. Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created. The mutability of each PendingIntent object that app has created must be specified. Use the PendingIntent object created as part of building the notification. Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification) 5 Bluetooth permissions: Android 12 introduces new permissions that let apps scan for nearby Bluetooth devices without requesting location permissions. App crashes with SecurityException: Need android.permission.BLUETOOTH_SCAN permission when try to do bluetooth scan operation. Declare the following permissions in your app’s manifest file: If your app looks for Bluetooth devices, such as BLE peripherals, declare the BLUETOOTH_SCAN permission. If your app communicates with already-paired Bluetooth devices, declare the BLUETOOTH_CONNECT permission. If your app uses Bluetooth scan results to derive physical location, declare the ACCESS_FINE_LOCATION permission. 6 Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification. When app is in the background, Video call activity won’t be started from the broadcast receiver or service Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification. 7 Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps. By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color). The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App) The degraded or unintended experiences can be prevented by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform. Bluetooth permissions: When an app upgrades to target Android 12 or higher, the app must request the new Bluetooth permissions explicitly. Android 12 introduces the following Bluetooth permissions, which replace the BLUETOOTH and BLUETOOTH_ADMIN permissions: BLUETOOTH_SCAN: Allows apps to discover and pair nearby Bluetooth devices. BLUETOOTH_ADVERTISE: Allows apps to advertise to nearby Bluetooth devices. BLUETOOTH_CONNECT: Allows apps to connect to paired Bluetooth devices. These permissions are part of the new NEARBY_DEVICES runtime permission group. This permission group enables use cases such as connecting to a smartwatch without requiring the LOCATION runtime permission. These new permissions are app compatible and no changes are required for apps running on Android 11 or lower. For legacy apps targeting Android 11 or lower, the platform automatically translates requests for the legacy Bluetooth permissions into requests for the new permissions. Approximate location: When using an app that targets Android 12 or higher, users can request that the app have access to only approximate location information. If your app targets Android 12 or higher and requests the ACCESS_FINE_LOCATION runtime permission, you must also request the ACCESS_COARSE_LOCATION permission. You must include both permissions in a single runtime request. When your app requests both ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION, the system permissions dialog includes the following new options for the user. Precise: Provides access to precise location information. Approximate: Provides access only to approximate location information. Check this for more details. 2 Pending intents mutability: the mutability of each PendingIntent object that your app creates must be specified. Usually we declare PendingIntents with flags indicating how a PendingIntent should be retrieved using FLAG_UPDATE_CURRENT or FLAG_ONE_SHOT, FLAG_NO_CREATE, FLAG_CANCEL_CURRENT Now add PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_MUTABLE for required PendingIntents along with the other flags. If not specified, App crashes with the following exception: java.lang.IllegalArgumentException: Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent. Java Add PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE Kotlin Add PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE 3 Safer component exporting: If your app targets Android 12 or higher and contains activities, services, or broadcast receivers that use intent filters, you must explicitly declare the android:exported attribute for these app components. If not added, Build fails with exception Manifest merger failed : Apps targeting Android 12 and higher are required to specify an explicit value for android:exported when the corresponding component has an intent filter defined. Add android:exported for all activities, services and broadcast receivers that use intent filters If the app component includes the LAUNCHER category, set android:exported to true. In most other cases, set android:exported to false. 4 Apps can’t close system dialogs: To improve user control when interacting with apps and the system, the ACTION_CLOSE_SYSTEM_DIALOGS intent action is deprecated as of Android 12. If added, App crashes with a SecurityException. add condition (Build.VERSION.SDK_INT &amp;lt;= Build.VERSION_CODES.R) whenever ACTION_CLOSE_SYSTEM_DIALOGS intent action is used. if (Build.VERSION.SDK_INT &amp;lt;= Build.VERSION_CODES.R) { context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)); } 5 Foreground service launch restrictions: Apps are no longer permitted to start foreground services while running in the background. If an app tries to start a foreground service while the app is running in the background, and the foreground service doesn’t satisfy one of the exceptional cases, the system throws a ForegroundServiceStartNotAllowedException. Since API 29+, when app is in background, if any push notification is received, on message received at FireMessagingService, an Activity couldn’t be started. A Foreground Service was introduced to handle incoming video calls. Apps that target Android 12 or higher can’t start foreground services while running in the background Edit: Foreground Service can be started successfully, unless it takes too long before startForeGround(id, notification) is called. Make sure there is pending intent for starting the Activity from Service/Broadcast Receiver is created. The mutability of each PendingIntent object that app has created must be specified. Use the PendingIntent object created as part of building the notification. Make sure heavy tasks are not running on main thread which may delay invocation of startForeGround(id, notification) 6 Notification trampoline restrictions: Apps can no longer use intermediary services or broadcast receivers to open an activity when the user taps a notification. When app is in the background, Video call activity won’t be started from the broadcast receiver or service Create a PendingIntent object that is associated with the activity that users see after they tap on the notification. Use the PendingIntent object created as part of building the notification. 7 Starting in Android 12, the system always applies the new Android system default splash screen on cold and warm starts for all apps. By default, this system default splash screen is constructed using your app’s launcher icon element and the windowBackground of your theme (if it’s a single color). The existing splash screen which is implemented using a custom theme that overrides android:windowBackground, the system replaces custom splash screen with a default Android system splash screen on Android 12 and higher (which may not be app’s intended experience). (In case of Interview Android App) The degraded or unintended experiences can be prevented by completing the migration process by using the Androidx SplashScreen compat library which ensures a consistent look and feel for splash screen experience and ensures a more consistent launch experience with other apps on the platform. https://developer.android.com/guide/topics/ui/splash-screen/migrate If you are migrating your app to support Android 12, also look for these changes which may break the way your app behaves: User experience change such as notifications and toast messages, Deprecated APIs, Camera preview on large screens, Security and Privacy changes such as Blocked Untrusted touch events,Performance improvements such as Restricted App Standby Bucket.</summary></entry><entry><title type="html">How Joda Date library helped with every Date utilities, when we still had to support &amp;lt; Java 8</title><link href="http://localhost:4001/2022/05/22/Joda-lib.html" rel="alternate" type="text/html" title="How Joda Date library helped with every Date utilities, when we still had to support &amp;lt; Java 8" /><published>2022-05-22T00:00:00+05:30</published><updated>2022-05-22T00:00:00+05:30</updated><id>http://localhost:4001/2022/05/22/Joda-lib</id><content type="html" xml:base="http://localhost:4001/2022/05/22/Joda-lib.html">&lt;p&gt;Why Joda?&lt;/p&gt;
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;a href=&quot;https://www.joda.org/joda-time/&quot;&gt;Joda-Time&lt;/a&gt; provides a quality replacement for the Java date and time classes.
-The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
-From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs.
-Joda solves the problem of providing one set of APIs which can be used across all OS versions.&lt;/p&gt;
-
-&lt;p&gt;Add the dependency&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;implementation 'net.danlew:android.joda:2.10.14'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Get date in the time zone&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;From Unix to human readable date at given timezone.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
-return DateTime(receivedTime * 1000L, zone)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Manipulate current time to trigger an alarm&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;If device is in different time zone, convert to device time zone&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Convert the device time to Calender object to pass it to AlarmManager&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;val time = deviceTime.toGregorianCalendar()
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Use this time to pass it to Alarm methods&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alarmManager.setAlarmClock(
-AlarmManager.AlarmClockInfo(time, pendingIntent),
-pendingIntent)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;For Unit testing:&lt;/p&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;testCompile 'joda-time:joda-time:2.10.14'
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="Java8" /><category term="Date" /><category term="Joda" /><summary type="html">Why Joda? Joda-Time provides a quality replacement for the Java date and time classes. The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310). Our project minSdk is set to 23 (Android 6/7)which continue to use older Java APIs. Joda solves the problem of providing one set of APIs which can be used across all OS versions. Add the dependency implementation 'net.danlew:android.joda:2.10.14' Get date in the time zone val zone: DateTimeZone = DateTimeZone.forID(timezoneId) From Unix to human readable date at given timezone. val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Manipulate current time to trigger an alarm var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) If device is in different time zone, convert to device time zone var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Convert the device time to Calender object to pass it to AlarmManager val time = deviceTime.toGregorianCalendar() Use this time to pass it to Alarm methods alarmManager.setAlarmClock( AlarmManager.AlarmClockInfo(time, pendingIntent), pendingIntent) For Unit testing: testCompile 'joda-time:joda-time:2.10.14'</summary></entry><entry><title type="html">Then Joda, Now Java 8 APIs</title><link href="http://localhost:4001/2022/05/22/Joda-Lib.html" rel="alternate" type="text/html" title="Then Joda, Now Java 8 APIs" /><published>2022-05-22T00:00:00+05:30</published><updated>2022-05-22T00:00:00+05:30</updated><id>http://localhost:4001/2022/05/22/Joda-Lib</id><content type="html" xml:base="http://localhost:4001/2022/05/22/Joda-Lib.html">&lt;h1 id=&quot;why-joda&quot;&gt;Why Joda?&lt;/h1&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="accessibility" /><category term="contentDescription" /><category term="ScreenReader" /><category term="TalkBack" /><summary type="html">Screen Reader: When Screen Reader is turned on, on Android devices, it automatically announces what element is in focus. It is recommended use views that Android provides which include view’s role and content required by Accessibility service. If you need a custom button, you extend the Button rather than starting from scratch with a View.</summary></entry><entry><title type="html">Then Joda, Now Java 8 APIs</title><link href="http://localhost:4000/2022/05/22/Joda-Lib.html" rel="alternate" type="text/html" title="Then Joda, Now Java 8 APIs" /><published>2022-05-22T00:00:00+05:30</published><updated>2022-05-22T00:00:00+05:30</updated><id>http://localhost:4000/2022/05/22/Joda-Lib</id><content type="html" xml:base="http://localhost:4000/2022/05/22/Joda-Lib.html">&lt;h1 id=&quot;why-joda&quot;&gt;Why Joda?&lt;/h1&gt;
 &lt;blockquote&gt;
   &lt;p&gt;Joda-Time provides a quality replacement for the Java date and time classes.
 The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
@@ -438,7 +347,7 @@ return ZonedDateTime.ofInstant(instant, zone)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;Use this time to pass it to Alarm methods&lt;/p&gt;
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="targetSdk" /><category term="Date" /><category term="Joda-time" /><category term="Java8" /><category term="java.time" /><category term="sugar" /><category term="desugar" /><summary type="html">Why Joda? Joda-Time provides a quality replacement for the Java date and time classes. The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310). Our project minSdk is set to 23 (Android 6/7) Joda would solve the problem of providing one set of APIs which can be used across all OS versions. Add the dependency implementation 'net.danlew:android.joda:2.10.14' Get date in the time zone val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) From Unix to human readable date at given timezone. val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Manipulate current time to trigger an alarm var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) If device is in different time zone, convert to device time zone var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Convert the device time to Calender object to pass it to AlarmManager val time = deviceTime.toGregorianCalendar() Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent) For Unit testing: testImplementation 'joda-time:joda-time:2.10.14' Update Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with NoClassDefFoundError). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available. Desugaring What’s sugaring in programming world? Why we need desugaring and how it helps with above problem? From one of the SO posts: Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program). Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome. “Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions. So what we are doing here? When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them. The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code. So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android. To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file: android { defaultConfig { // Required when setting minSdkVersion to 20 or lower multiDexEnabled = true } compileOptions { // Flag to enable support for the new language APIs // For AGP 4.1+ isCoreLibraryDesugaringEnabled = true // For AGP 4.0 // coreLibraryDesugaringEnabled = true // Sets Java compatibility to Java 8 sourceCompatibility = JavaVersion.VERSION_1_8 targetCompatibility = JavaVersion.VERSION_1_8 } } dependencies { coreLibraryDesugaring(&quot;com.android.tools:desugar_jdk_libs:1.1.5&quot;) } Now you can continue using all the Java 8 Time APIs! After all the research, here is the effort that took for migrating all Joda calls to equivalent Java 8 APIs: Get date in the time zone Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) Java: val zoneId = ZoneId.of(timezoneId) val time = ZonedDateTime.now(zoneId) From Unix to human readable date at given timezone. Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Java: val zone: ZoneId = ZoneId.of(timezoneId) val instant = Instant.ofEpochMilli(receivedTime * 1000L) return ZonedDateTime.ofInstant(instant, zone) Manipulate current time to trigger an alarm Joda: var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) Java: var triggerTime = date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0) .withNano(0) If device is in different time zone, convert to device time zone Joda: var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Java: var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault()) Convert the device time to Calender object to pass it to AlarmManager Joda: val time = deviceTime.toGregorianCalendar() Java: val time = GregorianCalendar.from(deviceTime) Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)</summary></entry><entry><title type="html">Bluetooth Permissions on Android 12</title><link href="http://localhost:4001/2022/05/04/bluetooth_permissions_on_android_12.html" rel="alternate" type="text/html" title="Bluetooth Permissions on Android 12" /><published>2022-05-04T00:00:00+05:30</published><updated>2022-05-04T00:00:00+05:30</updated><id>http://localhost:4001/2022/05/04/bluetooth_permissions_on_android_12</id><content type="html" xml:base="http://localhost:4001/2022/05/04/bluetooth_permissions_on_android_12.html">&lt;p&gt;Beginning with Android 12, new run-time permissions are added for accessing nearby Bluetooth devices. Without this permission any APIs related to Bluetooth devices access will result into Fatal Exception:&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android" /><category term="targetSdk" /><category term="Date" /><category term="Joda-time" /><category term="Java8" /><category term="java.time" /><category term="sugar" /><category term="desugar" /><summary type="html">Why Joda? Joda-Time provides a quality replacement for the Java date and time classes. The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8. From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310). Our project minSdk is set to 23 (Android 6/7) Joda would solve the problem of providing one set of APIs which can be used across all OS versions. Add the dependency implementation 'net.danlew:android.joda:2.10.14' Get date in the time zone val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) From Unix to human readable date at given timezone. val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Manipulate current time to trigger an alarm var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) If device is in different time zone, convert to device time zone var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Convert the device time to Calender object to pass it to AlarmManager val time = deviceTime.toGregorianCalendar() Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent) For Unit testing: testImplementation 'joda-time:joda-time:2.10.14' Update Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with NoClassDefFoundError). There’s a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let’s first talk about the solution available. Desugaring What’s sugaring in programming world? Why we need desugaring and how it helps with above problem? From one of the SO posts: Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program). Java is widely seen as not being concise enough, especially compared to modern languages. That’s why those additions that help make the code faster to read are welcome. “Desugaring” refers to automatically translating “sugar” constructs into other constructs when the compiler or runtime lacks native support for the sugared versions. So what we are doing here? When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them. The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code. So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android. To enable support for these language APIs on any version of the Android platform, update the Android plugin to 4.0.0 (or higher) and include the following in your app module’s build.gradle file: android { defaultConfig { // Required when setting minSdkVersion to 20 or lower multiDexEnabled = true } compileOptions { // Flag to enable support for the new language APIs // For AGP 4.1+ isCoreLibraryDesugaringEnabled = true // For AGP 4.0 // coreLibraryDesugaringEnabled = true // Sets Java compatibility to Java 8 sourceCompatibility = JavaVersion.VERSION_1_8 targetCompatibility = JavaVersion.VERSION_1_8 } } dependencies { coreLibraryDesugaring(&quot;com.android.tools:desugar_jdk_libs:1.1.5&quot;) } Now you can continue using all the Java 8 Time APIs! After all the research, here is the effort that took for migrating all Joda calls to equivalent Java 8 APIs: Get date in the time zone Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) val time = DateTime(zone) Java: val zoneId = ZoneId.of(timezoneId) val time = ZonedDateTime.now(zoneId) From Unix to human readable date at given timezone. Joda: val zone: DateTimeZone = DateTimeZone.forID(timezoneId) return DateTime(receivedTime * 1000L, zone) Java: val zone: ZoneId = ZoneId.of(timezoneId) val instant = Instant.ofEpochMilli(receivedTime * 1000L) return ZonedDateTime.ofInstant(instant, zone) Manipulate current time to trigger an alarm Joda: var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0) Java: var triggerTime = date.plusHours(notificationCount.toLong()).plusMinutes(totalDelay.toLong()).withSecond(0) .withNano(0) If device is in different time zone, convert to device time zone Joda: var deviceTime = triggerTime.withZone(DateTimeZone.getDefault()) Java: var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault()) Convert the device time to Calender object to pass it to AlarmManager Joda: val time = deviceTime.toGregorianCalendar() Java: val time = GregorianCalendar.from(deviceTime) Use this time to pass it to Alarm methods alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)</summary></entry><entry><title type="html">Bluetooth Permissions on Android 12</title><link href="http://localhost:4000/2022/05/04/bluetooth_permissions_on_android_12.html" rel="alternate" type="text/html" title="Bluetooth Permissions on Android 12" /><published>2022-05-04T00:00:00+05:30</published><updated>2022-05-04T00:00:00+05:30</updated><id>http://localhost:4000/2022/05/04/bluetooth_permissions_on_android_12</id><content type="html" xml:base="http://localhost:4000/2022/05/04/bluetooth_permissions_on_android_12.html">&lt;p&gt;Beginning with Android 12, new run-time permissions are added for accessing nearby Bluetooth devices. Without this permission any APIs related to Bluetooth devices access will result into Fatal Exception:&lt;/p&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;java.lang.SecurityException
 Need android.permission.BLUETOOTH_CONNECT permission ...
@@ -479,4 +388,4 @@ Need android.permission.BLUETOOTH_CONNECT permission ...
             return new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         } else return new String[]{Manifest.permission.ACCESS_COARSE_LOCATION};
     }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android12" /><category term="targetSdk" /><category term="Bluetooth" /><category term="BLE" /><category term="run-time" /><category term="permissions" /><category term="location" /><category term="fine_location_permission" /><summary type="html">Beginning with Android 12, new run-time permissions are added for accessing nearby Bluetooth devices. Without this permission any APIs related to Bluetooth devices access will result into Fatal Exception:</summary></entry><entry><title type="html">Welcome!</title><link href="http://localhost:4001/welcome/2022/05/03/welcome.html" rel="alternate" type="text/html" title="Welcome!" /><published>2022-05-03T23:35:34+05:30</published><updated>2022-05-03T23:35:34+05:30</updated><id>http://localhost:4001/welcome/2022/05/03/welcome</id><content type="html" xml:base="http://localhost:4001/welcome/2022/05/03/welcome.html">&lt;p&gt;You will find here some debugging, some tips and tricks from my experience.&lt;/p&gt;</content><author><name></name></author><category term="welcome" /><summary type="html">You will find here some debugging, some tips and tricks from my experience.</summary></entry></feed>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name></name></author><category term="Android12" /><category term="targetSdk" /><category term="Bluetooth" /><category term="BLE" /><category term="run-time" /><category term="permissions" /><category term="location" /><category term="fine_location_permission" /><summary type="html">Beginning with Android 12, new run-time permissions are added for accessing nearby Bluetooth devices. Without this permission any APIs related to Bluetooth devices access will result into Fatal Exception:</summary></entry><entry><title type="html">Welcome!</title><link href="http://localhost:4000/welcome/2022/05/03/welcome.html" rel="alternate" type="text/html" title="Welcome!" /><published>2022-05-03T23:35:34+05:30</published><updated>2022-05-03T23:35:34+05:30</updated><id>http://localhost:4000/welcome/2022/05/03/welcome</id><content type="html" xml:base="http://localhost:4000/welcome/2022/05/03/welcome.html">&lt;p&gt;You will find here some debugging, some tips and tricks from my experience.&lt;/p&gt;</content><author><name></name></author><category term="welcome" /><summary type="html">You will find here some debugging, some tips and tricks from my experience.</summary></entry></feed>
