@@ -5,19 +5,24 @@ tags: Android targetSdk Date Joda-time Java8 java.time sugar desugar
 ---
 
 # Why Joda?
+I had to implement a feature in our app which would trigger repeat alarms which will be set based on specific events. Our project minSdk was set to 23 (Yes, we support Android 6!) and I thought Java 8 Time APIs I cannot use. So Joda was the option I had. 
+
 > Joda-Time provides a quality replacement for the Java date and time classes.
 > The standard date and time classes prior to Java SE 8 are poor. By tackling this problem head-on, Joda-Time became the de facto standard date and time library for Java prior to Java SE 8.
 > From Java SE 8 onwards, users are asked to migrate to java.time (JSR-310).
 
-Our project minSdk is set to 23 (Android 6/7)
-Joda would solve the problem of providing one set of APIs which can be used across all OS versions.
+From the offcial documentation of Joda, it was clear that I could solve my problem with these superior APIs. Joda would solve the problem of providing one set of APIs which can be used across all OS versions.
+
+## So here's how I had it started
 
 Add the dependency
 ```
 implementation 'net.danlew:android.joda:2.10.14'
 ```
 
-Get date in the time zone
+### The APIs which I used in our project for different purposes:
+
+Get date in the given time zone
 ```
 val zone: DateTimeZone = DateTimeZone.forID(timezoneId)
 val time = DateTime(zone)
@@ -35,7 +40,7 @@ Manipulate current time to trigger an alarm
 var triggerTime = date.plusHours(notificationCount).plusMinutes(totalDelay).withSecondOfMinute(0).withMillisOfSecond(0)
 ```
 		 
-If device is in different time zone, convert to device time zone
+If device is in different time zone, convert the time to device time zone
 ```
 var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())	
 ```
@@ -57,11 +62,11 @@ testImplementation 'joda-time:joda-time:2.10.14'
 
 # **Update**
 
-Now since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6/7 (App will crash with ```NoClassDefFoundError```). There's a solution available only if Java 8 APIs migration would be a simple effortless task. We will come to that later, let's first talk about the solution available.
+Since Joda-time library is in maintenance mode, it is recommended to migrate to new Java 8 APIs, but still need to support Android 6 (App will crash with ```NoClassDefFoundError```), I was skeptical, kept reasearching what everyone is doing. Even posted a question on [SO](https://stackoverflow.com/questions/72651942/joda-lib-in-production). I got to know that I could replace Joda with Java 8 APIs while supporting Android 6! Cool right?! Let's see how!.
 
-# Desugaring
+## Desugaring
 
-What's sugaring in programming world? Why we need desugaring and how it helps with above problem?
+### What's sugaring in programming world? Why we need desugaring and how it helps with above problem?
 
 From one of the SO posts:
 >Sugar, in programming, usually refers to those sweet additions, mostly shortcuts, that make some constructs easier to type and to read (the latter being, in practice, the most important during the life cycle of your program).
@@ -69,7 +74,7 @@ Java is widely seen as not being concise enough, especially compared to modern l
 
 >"Desugaring" refers to automatically translating "sugar" constructs into other constructs when the compiler or runtime lacks native support for the sugared versions.
 
-So what we are doing here?
+#### So what we are doing here? From Android documentation:
 >When building your app using Android Gradle plugin 4.0.0 and higher, you can use a number of Java 8 language APIs without requiring a minimum API level for your app. The Android Gradle plugin provides built-in support for using certain Java 8 language features and third-party libraries that use them.  The default toolchain implements the new language features by performing bytecode transformations, called desugar, as part of the D8/R8 compilation of class files into dex code.
 So, you can include standard language APIs that were available only in recent Android releases (such as java.time) in apps that support older versions of Android.
 
@@ -104,7 +109,7 @@ Now you can continue using all the Java 8 Time APIs!
 
 After all the research, here is the effort that took for migrating all Joda calls to equivalent Java 8 APIs:
 
-Get date in the time zone
+Get date in the current time zone
 
 Joda:
 ```
@@ -153,7 +158,7 @@ var deviceTime = triggerTime.withZone(DateTimeZone.getDefault())
 ```
 Java:
 ```
-var deviceTime = triggerTime.withZoneSameLocal(ZoneId.systemDefault())
+var deviceTime = triggerTime.withZoneSameInstant(ZoneId.systemDefault())
 ```
 
 Convert the device time to Calender object to pass it to AlarmManager
@@ -161,13 +166,18 @@ Convert the device time to Calender object to pass it to AlarmManager
 Joda:
 ```
 val time = deviceTime.toGregorianCalendar()
-```		
+```	
+
 Java:
+
 ```
 val time = GregorianCalendar.from(deviceTime)
 ```
+
 Use this time to pass it to Alarm methods
+
 ```
 alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time.timeInMillis, pendingIntent), pendingIntent)
 ```
 
+That's it! Feel free to connect if you want to know any other equivalent Java 8 API while replacing Joda!
