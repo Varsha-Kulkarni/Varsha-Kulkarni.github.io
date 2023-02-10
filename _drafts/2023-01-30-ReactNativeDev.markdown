@@ -1,0 +1,7 @@
+Recently I had to start working with a project based on React Native framework. Being an android developer for quite sometime and having worked on iOS too, I kept wondering why not native. But since the whole team consisted of web developers and they find easy to develop using a web like framework, insisted on using  react native, me being just bit familiar with basic vanilla javascript, having no much idea about react or react native, hesitated first, but then I decided take it as an opportunity, dived into it. 
+It took almost a week for me to get the initial codebase running without getting server disconnecting or failing to bundle and install. I was given mostly android native side of sensor data reading and bridging with react native and emitting events. Once done, now the challenge was to use different packages for getting foreground service, location provider, permissions and workmanager. When I was going through these packages I saw issues like no support for latest Android versions, a lot of open issues not addressed, few of them implemented only iOS etc.
+
+Then I went via native way to almost implement everything in kotlin and bridge with react native UI. 
+I also got to learn react way of development, more concepts like Promises, async/await,  arrow functions, hooks. 
+That even inspired me to get back to learning Compose. As a developer switching between frameworks is not that hard if you understand the basics. 
+I had once tried Node js, now I may explore more on JS based frameworks.
